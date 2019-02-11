@@ -38,7 +38,7 @@ public class driveStraight extends Command {
     	Robot.driveTrain.resetGyro();
     }
 
-    // Called repeatedly when this Command is scheduled to run
+    // Called repeatedly when this Command is schedu -0 =-rroled to run
     protected void execute() {
     	left_command = initial_left; 
     	right_command = initial_right;

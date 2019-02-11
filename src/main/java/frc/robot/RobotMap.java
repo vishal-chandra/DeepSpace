@@ -17,12 +17,16 @@ public class RobotMap {
 	// public static int rangefinderPort = 1;
 	// public static int rangefinderModule = 1;
 	
-	// MOTOR PORTS 
-	public static final int TOP_LEFT_DRIVETRAIN_MOTOR = 1; 
-	public static final int BOTTOM_LEFT_DRIVETRAIN_MOTOR = 1; 
 
-	public static final int TOP_RIGHT_DRIVETRAIN_MOTOR = 0; 
-	public static final int BOTTOM_RIGHT_DRIVETRAIN_MOTOR = 0; 
+	
+
+
+	// MOTOR PORTS 
+	public static final int BACK_LEFT_MOTOR = 1; 
+	public static final int FRONT_LEFT_MOTOR = 2;
+	public static final int FRONT_RIGHT_MOTOR = 3; 
+	public static final int BACK_RIGHT_MOTOR = 4; 
+	
 	
 	public static final int LEFT_ENCODER_ONE = 0; 
 	public static final int LEFT_ENCODER_TWO = 1; 
@@ -36,7 +40,34 @@ public class RobotMap {
 	//fly wheels 
 	public static final int FLY = 0; 
 
-	
+	public static final int ELEVATOR_POSITION_SLOT = 0; 
+	public static final int ELEVATOR_VELOCITY_SLOT = 1; 
+	public static final double ELEVATOR_ARBFEEDFWD = 0.0; 
+	// Elevator manual velocity PID 
+	public static final double elevator_velocity_kF = 0.0;
+	public static final double elevator_velocity_kP = 0.0; 
+	public static final double elevator_velocity_kI = 0.0; 
+	public static final double elevator_velocity_kD = 0.0; 
+
+	// elevator position PID 
+	public static final double elevator_position_kF = 0.0; 
+	public static final double elevator_position_kP = 0.0; 
+	public static final double elevator_position_kI = 0.0; 
+	public static final double elevator_position_kD = 0.0; 
+
+	public static final int ARM_POSITION_SLOT = 0; 
+	public static final int ARM_VELOCITY_SLOT = 1;
+	// arm position PID 
+	public static final double arm_position_kF = 0.0; 
+	public static final double arm_position_kP = 0.0; 
+	public static final double arm_position_kI = 0.0; 
+	public static final double arm_position_kD = 0.0;
+
+	public static final double arm_velocity_kF = 0.0; 
+	public static final double arm_velocity_kP = 0.0; 
+	public static final double arm_velocity_kI = 0.0; 
+	public static final double arm_velocity_kD = 0.0;
+
 	public static final double kP = 0.5; 
 	public static final double kI = 0.3; 
 	public static final double kD = 0.4; 

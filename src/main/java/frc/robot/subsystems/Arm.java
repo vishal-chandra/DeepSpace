@@ -22,22 +22,35 @@ public class Arm extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	
-	SpeedController body1;
-	SpeedController body2; 
-//	WPI_TalonSRX arm; 
-	TalonSRX arm; 
- 
-	Encoder bodyEncoder;
 	
-	DigitalInput bodyUp; 
-	DigitalInput bodyDown; 
+    WPI_TalonSRX arm; 
+    SpeedController fly; 
+ 
+	
+	
 	
 	DigitalInput armUp; 
-	DigitalInput armDown; 
+    DigitalInput armDown; 
+    public double position;
 
 	public Arm(){
 //		arm = new WPI_TalonSRX(RobotMap.ARM_MOTOR); 
-		arm = new TalonSRX(RobotMap.ARM_MOTOR) ;
+        fly = new Talon(RobotMap.FLY);
+        arm = new WPI_TalonSRX(RobotMap.ARM_MOTOR) ;
+        arm.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+        arm.configNominalOutputForward(0, 30);
+        arm.configNominalOutputReverse(0, 30);
+        arm.configPeakOutputForward(0.5, 30); 
+        arm.configPeakOutputReverse(-0.5, 30);
+
+        // POSITION: 0 
+    this.setPID(RobotMap.ARM_POSITION_SLOT, RobotMap.arm_position_kF, 
+      RobotMap.arm_position_kP, RobotMap.arm_position_kI, 
+      RobotMap.arm_velocity_kD); 
+    // VELOCITY: 1
+    this.setPID(RobotMap.ARM_VELOCITY_SLOT, RobotMap.arm_velocity_kF,
+      RobotMap.arm_velocity_kP, RobotMap.arm_velocity_kI,
+      RobotMap.arm_velocity_kD);
 //		body1 = new Talon(RobotMap.BODY_MOTOR_ONE); 
 //		body2 = new Talon(RobotMap.BODY_MOTOR_TWO); 
 //
@@ -57,25 +70,18 @@ public class Arm extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     
-    public void raiseBody(){
-    	body1.set(0.8);
-    	body2.set(0.8);
-
-    }
     
-    public void lowerBody(){
-    	body1.set(-0.8);
-    	body2.set(-0.8);
+    public void setPosition(){
+        arm.selectProfileSlot(RobotMap.ARM_POSITION_SLOT, 0);
+    	arm.set(ControlMode.Position, this.position);
+    }
 
-    }
-    public void bodyStop(){
-    	body1.set(0.0);
-    	body2.set(0.0);
+    public void setSpeed(double speed){
+        arm.selectProfileSlot(RobotMap.ARM_VELOCITY_SLOT, 0);
 
-    }
-    public void moveArm(double distance){
-    	arm.set(ControlMode.Position, distance);
-    }
+        arm.set(ControlMode.Velocity, speed); 
+      }
+
     public void raiseArm(){
     	arm.set(ControlMode.PercentOutput, 0.4);
 //    	arm.set(0.1); 	
@@ -90,42 +96,35 @@ public class Arm extends Subsystem {
     	arm.set(ControlMode.PercentOutput, 0.0);
 //    	arm.set(0.0);
     }
-    // BODY
-    public boolean bodyIsUp(){
-    	return bodyUp.get(); 
-    }
-    
-    public boolean bodyIsDown(){
-    	return bodyDown.get(); 
-    }
-    // ARM
-    public boolean armIsUp(){
-    	return bodyUp.get(); 
-    }
-    
-    public boolean armIsDown(){
-    	return bodyDown.get(); 
-    }
-    //ENCODERS
-    public double getBodyEncoder(){
-    	return bodyEncoder.getDistance();
-    }
+    public void setPID(int slot,double kF, double kP, double kI, double kD){
+        arm.config_kF(slot, kF, 30); 
+        arm.config_kP(slot, kP, 30); 
+        arm.config_kI(slot, kI, 30); 
+        arm.config_kD(slot, kD, 30); 
+      }
+   
     
     public double getArmEncoder(){
     	return arm.getSensorCollection().getQuadraturePosition();
     }
     
-    public void resetEncoder(){
-    	bodyEncoder.reset();
+    public void resetArm(){
+        arm.getSensorCollection().setQuadraturePosition(0, 30);
+
     }
+    public void intake(){
+        fly.set(0.5);
+    }
+
+    public void shoot(){
+        fly.set(-0.5); 
+    }
+
+    public void setSlot(int slot){
+        arm.selectProfileSlot(slot, 0);
+      }
     public void updateSmartDashboard(){
-//    	SmartDashboard.putBoolean("Body Up:", bodyIsUp()); 
-//    	SmartDashboard.putBoolean("Body Down:", bodyIsDown()); 
-//    	
-//    	SmartDashboard.putBoolean("Arm Up:", armIsUp()); 
-//    	SmartDashboard.putBoolean("Arm Down:", armIsDown()); 
-//    	
-//    	SmartDashboard.putNumber("Body Encoder:", getBodyEncoder()); 
+
     	SmartDashboard.putNumber("Arm Encoder:", getArmEncoder()); 
 
     	

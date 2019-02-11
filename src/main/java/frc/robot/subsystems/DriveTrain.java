@@ -38,10 +38,10 @@ public class DriveTrain extends Subsystem {
 	//private SpeedController bottomLeft; 
 	//private SpeedController bottomRight;
 
-	private WPI_VictorSPX bottomLeft; 
-	private WPI_VictorSPX bottomRight; 
-	private WPI_TalonSRX topLeft; 
-	private WPI_TalonSRX topRight;
+	private WPI_VictorSPX frontLeftSpx; 
+	private WPI_VictorSPX frontRightSpx; 
+	private WPI_TalonSRX backLeftSrx; 
+	private WPI_TalonSRX backRightSrx;
 
 
 	
@@ -66,23 +66,24 @@ public class DriveTrain extends Subsystem {
 	public DriveTrain(){
 //		leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_ONE, RobotMap.LEFT_ENCODER_TWO, false, Encoder.EncodingType.k4X);
 //		rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_ONE, RobotMap.RIGHT_ENCODER_TWO, false, Encoder.EncodingType.k4X);
-		
-		bottomLeft = new WPI_VictorSPX(1); 
-		topLeft = new WPI_TalonSRX(1); 
-		topLeft.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-//		topLeft.getSensorCollection().setQuadraturePosition(0, 10); 
-		left = new SpeedControllerGroup(topLeft, bottomLeft); 
+		backLeftSrx = new WPI_TalonSRX(RobotMap.BACK_LEFT_MOTOR);//1 
 
-		bottomRight = new WPI_VictorSPX(0); 
-		topRight = new WPI_TalonSRX(0);
+		frontLeftSpx = new WPI_VictorSPX(RobotMap.FRONT_LEFT_MOTOR); //2 
+		backLeftSrx.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+		left = new SpeedControllerGroup(backLeftSrx, frontLeftSpx); 
 
-		bottomRight.follow(topRight); 
-		bottomLeft.follow(topLeft); 
-		right = new SpeedControllerGroup(topRight, bottomRight); 
-		topRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+		frontRightSpx = new WPI_VictorSPX(RobotMap.FRONT_RIGHT_MOTOR); // 3 
+		backRightSrx = new WPI_TalonSRX(RobotMap.BACK_RIGHT_MOTOR); // 4
+
+		 
+		right = new SpeedControllerGroup(backRightSrx, frontRightSpx); 
+		backRightSrx.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
+
+		frontRightSpx.follow(backRightSrx); 
+		frontLeftSpx.follow(backLeftSrx);
 		
-		topLeft.getSensorCollection().setQuadraturePosition(0, 10); 
-    	topRight.getSensorCollection().setQuadraturePosition(0, 10);
+		backLeftSrx.getSensorCollection().setQuadraturePosition(0, 10); 
+    	backRightSrx.getSensorCollection().setQuadraturePosition(0, 10);
 
 
 
@@ -118,10 +119,10 @@ public class DriveTrain extends Subsystem {
 	}
 	public void driveNow(Joystick left, Joystick right){
 		
-		topLeft.setInverted(backwards);
-		bottomLeft.setInverted(backwards);
-		topRight.setInverted(backwards);
-		bottomRight.setInverted(backwards);
+		frontLeftSpx.setInverted(backwards);
+		backLeftSrx.setInverted(backwards);
+		frontRightSpx.setInverted(backwards);
+		backRightSrx.setInverted(backwards);
 		if(backwards) robotDrive.tankDrive(-right.getY(), -left.getY(), true); 
 		else robotDrive.tankDrive(-left.getY(),  -right.getY(), true);
 
@@ -130,10 +131,10 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	public void curavtureDrive(double forward, double turn){
-		topLeft.setInverted(backwards);
-		bottomLeft.setInverted(backwards);
-		topRight.setInverted(backwards);
-		bottomRight.setInverted(backwards);
+		frontLeftSpx.setInverted(backwards);
+		backLeftSrx.setInverted(backwards);
+		frontRightSpx.setInverted(backwards);
+		backRightSrx.setInverted(backwards);
 		if(forward < -0.1 ) turn = -turn; 
 //		if(Math.abs(forward) < 0.05 && Math.abs(turn) > 0){
 //			robotDrive.tankDrive(-turn, turn);
@@ -170,15 +171,15 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	public void resetEncoders(){
-    	topLeft.getSensorCollection().setQuadraturePosition(0, 10); 
-    	topRight.getSensorCollection().setQuadraturePosition(0, 10);
+    	backLeftSrx.getSensorCollection().setQuadraturePosition(0, 10); 
+    	backRightSrx.getSensorCollection().setQuadraturePosition(0, 10);
 
 	}
 	public double getLeft(){
-		return topLeft.getSensorCollection().getQuadraturePosition();
+		return backLeftSrx.getSensorCollection().getQuadraturePosition();
 	}
 	public double getRight(){
-		return -topRight.getSensorCollection().getQuadraturePosition();
+		return backRightSrx.getSensorCollection().getQuadraturePosition();
 	}
 
 	public void updateSmartDashboard(){

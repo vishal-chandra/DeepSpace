@@ -2,11 +2,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 //import frc.robot.commands.fillTanks;
 import frc.robot.commands.resetGyro;
@@ -15,6 +17,7 @@ import frc.robot.subsystems.Arm;
 
 //import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Elevator;
 //import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Vision;
 
@@ -25,11 +28,12 @@ import frc.robot.subsystems.Vision;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot extends IterativeRobot {
+public class Robot extends TimedRobot {
 	public static DriveTrain driveTrain;
+	public static Elevator elevator; 
 	//public static Claw grabby; 
 	public static Vision vision; 
-	//public static Arm arm; 
+	public static Arm arm; 
 	public static OI oi;
 	
 
@@ -46,7 +50,8 @@ public class Robot extends IterativeRobot {
 		driveTrain = new DriveTrain(); 
 		//grabby = new Claw(); 
 		vision = new Vision(); 
-		//arm = new Arm(); 
+		//elevator = new Elevator(0); 
+		arm = new Arm(); 
 
 		oi = new OI();
 //		chooser.addDefault("Default Auto", new ExampleCommand());
@@ -142,5 +147,7 @@ public class Robot extends IterativeRobot {
 		vision.updateSmartDashboard();
 		//arm.updateSmartDashboard();
 		SmartDashboard.putBoolean("Open:", RobotMap.open); 
+		// SmartDashboard.putNumber("right trigger", oi.xbox.getTriggerAxis(Hand.kRight));
+		// SmartDashboard.putNumber("left trigger", oi.xbox.getTriggerAxis(Hand.kLeft));
 	}
 }

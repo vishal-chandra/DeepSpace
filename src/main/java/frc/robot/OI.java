@@ -13,6 +13,7 @@ import frc.robot.commands.rotateCounterClockwise;
 import frc.robot.commands.streamCameras;
 import frc.robot.commands.toggleClaw;
 import frc.robot.commands.turnRight90;
+import frc.robot.commands.changePipeline;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -55,32 +56,32 @@ public class OI {
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
 
-	public static Joystick right = new Joystick(1);
-		Button r1 = new JoystickButton(right, 1);
-		Button r2 = new JoystickButton(right, 2);
-		Button r3 = new JoystickButton(right, 3);
-		Button r4 = new JoystickButton(right, 4);
-		Button r5 = new JoystickButton(right, 5);
-		Button r6 = new JoystickButton(right, 6);
-		Button r7 = new JoystickButton(right, 7);
-		Button r8 = new JoystickButton(right, 8);
-		Button r9 = new JoystickButton(right, 9);
-		Button r10 = new JoystickButton(right, 10);
-		Button r11 = new JoystickButton(right, 11);
+	// public static Joystick right = new Joystick(1);
+	// 	Button r1 = new JoystickButton(right, 1);
+	// 	Button r2 = new JoystickButton(right, 2);
+	// 	Button r3 = new JoystickButton(right, 3);
+	// 	Button r4 = new JoystickButton(right, 4);
+	// 	Button r5 = new JoystickButton(right, 5);
+	// 	Button r6 = new JoystickButton(right, 6);
+	// 	Button r7 = new JoystickButton(right, 7);
+	// 	Button r8 = new JoystickButton(right, 8);
+	// 	Button r9 = new JoystickButton(right, 9);
+	// 	Button r10 = new JoystickButton(right, 10);
+	// 	Button r11 = new JoystickButton(right, 11);
 
-	public static Joystick left = new Joystick(0);
-		Button l1 = new JoystickButton(left, 1);
-		Button l2 = new JoystickButton(left, 2);
-		Button l3 = new JoystickButton(left, 3);
-		Button l4 = new JoystickButton(left, 4);
-		Button l5 = new JoystickButton(left, 5);
-		Button l6 = new JoystickButton(left, 6);
-		Button l7 = new JoystickButton(left, 7);
-		Button l8 = new JoystickButton(left, 8);
-		Button l9 = new JoystickButton(left, 9);
-		Button l10 = new JoystickButton(left, 10);
-		Button l11 = new JoystickButton(left, 11);
-	public static Joystick controller = new Joystick(2);
+	// public static Joystick left = new Joystick(2);
+	// 	Button l1 = new JoystickButton(left, 1);
+	// 	Button l2 = new JoystickButton(left, 2);
+	// 	Button l3 = new JoystickButton(left, 3);
+	// 	Button l4 = new JoystickButton(left, 4);
+	// 	Button l5 = new JoystickButton(left, 5);
+	// 	Button l6 = new JoystickButton(left, 6);
+	// 	Button l7 = new JoystickButton(left, 7);
+	// 	Button l8 = new JoystickButton(left, 8);
+	// 	Button l9 = new JoystickButton(left, 9);
+	// 	Button l10 = new JoystickButton(left, 10);
+	// 	Button l11 = new JoystickButton(left, 11);
+	public static Joystick controller = new Joystick(1);
 		Button c1 = new JoystickButton(controller, 1);
 		Button c2 = new JoystickButton(controller, 2);
 		Button c3 = new JoystickButton(controller, 3);
@@ -94,7 +95,9 @@ public class OI {
 		Button c11 = new JoystickButton(controller, 11);
 		Button c12 = new JoystickButton(controller, 12);
 		
-	public static XboxController xbox = new XboxController(3); 
+	public static XboxController xbox = new XboxController(0);
+		//Button x1 = new JoystickButton(xbox, 1); 
+		 
 
 //	public static Joystick xbox = new Joystick(2);
 //		Button x1 = new JoystickButton(xbox, 1);
@@ -137,14 +140,17 @@ public class OI {
 		/* logitech controller */
 
 
-		r1.toggleWhenPressed(new driveBaseSwitchDirections());
+		// r1.toggleWhenPressed(new driveBaseSwitchDirections());
 		c1.whileHeld(new rotateClockwise());
 		c2.whileHeld(new rotateCounterClockwise());
 		c3.whenPressed(new turnRight90()); 
 		c4.whenPressed(new autoAlign()); 
 		c7.whileHeld(new driveStraight(-0.8, -0.8));
 		c8.whileHeld(new driveStraight(0.8, 0.8));
-		//c6.whenPressed(new followTarget());
+		c6.whenPressed(new followTarget());
+		c9.whenPressed(new changePipeline(0));
+		c10.whenPressed(new changePipeline(1));
+
 //		c6.whenPressed(new toggleClaw());
 		
 //		c8.whenPressed(new streamCameras());

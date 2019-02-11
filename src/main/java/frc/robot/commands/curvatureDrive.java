@@ -3,6 +3,7 @@ import frc.robot.OI;
 import frc.robot.Robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -30,6 +31,8 @@ public class curvatureDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+		//double rightTrigger = Robot.oi.xbox.getTriggerAxis(Hand.kRight);
+		//SmartDashboard.putNumber("Right trigger:", rightTrigger); 
 		Robot.vision.getValues();
 		angle_setPoint = Robot.driveTrain.getYaw(); 
 		left_command = Robot.oi.xbox.getX(GenericHID.Hand.kRight) + Robot.oi.xbox.getY(GenericHID.Hand.kLeft) ; 

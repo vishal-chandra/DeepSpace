@@ -41,7 +41,7 @@ public class Vision extends Subsystem {
 	AnalogInput rightUltra;
 	double leftUltraDistance;
 	double rightUltraDistance;
-	final double conversion = 5 /*per mm*/ / (5/*V input*/ / 1024 /*arbitrary magic number*/);
+	final double mV_T0_mm = 5 / 4.88; // mm/mV
 
 
 	//Limelight
@@ -95,10 +95,19 @@ public class Vision extends Subsystem {
     	
 	}
 
-	public void getUltraDistances()
-	{
-		leftUltraDistance = leftUltra.getVoltage() * conversion;
-		rightUltraDistance = rightUltra.getVoltage() * conversion;
+	public void switchToBall()   {table.getEntry("pipeline").setNumber(1);}
+	public void switchToTarget() {table.getEntry("pipeline").setNumber(0);}
+
+	public void changePipeline(int pipeline){
+		table.getEntry("pipeline").setNumber(pipeline); 
+	}
+
+	public double leftUltra(){
+		return (leftUltra.getVoltage() * 1000) * mV_T0_mm;
+	}
+
+	public double rightUltra(){
+		return (rightUltra.getVoltage() * 1000) * mV_T0_mm; 
 	}
 	
 	public void getPhotoSensorValues()
@@ -131,9 +140,9 @@ public class Vision extends Subsystem {
     }
     
     public void updateSmartDashboard(){
-//    	SmartDashboard.putNumber("LimelightX", x); 
-//    	SmartDashboard.putNumber("LimelightY",  y); 
-//    	SmartDashboard.putNumber("LimelightArea",  area); 
+   		SmartDashboard.putNumber("Left Ultra:", leftUltra()); 
+   		SmartDashboard.putNumber("Right Ultra:",  rightUltra()); 
+   	//SmartDashboard.putNumber("LimelightArea",  area); 
     }
 }
 
