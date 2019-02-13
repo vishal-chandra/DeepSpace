@@ -22,60 +22,64 @@ public class RobotMap {
 
 
 	// MOTOR PORTS 
-	public static final int BACK_LEFT_MOTOR = 1; 
-	public static final int FRONT_LEFT_MOTOR = 2;
-	public static final int FRONT_RIGHT_MOTOR = 3; 
-	public static final int BACK_RIGHT_MOTOR = 4; 
+	public static  int BACK_LEFT_MOTOR = 1; 
+	public static  int FRONT_LEFT_MOTOR = 2;
+	public static  int FRONT_RIGHT_MOTOR = 3; 
+	public static  int BACK_RIGHT_MOTOR = 4; 
 	
 	
-	public static final int LEFT_ENCODER_ONE = 0; 
-	public static final int LEFT_ENCODER_TWO = 1; 
-	public static final int RIGHT_ENCODER_ONE = 2; 
-	public static final int RIGHT_ENCODER_TWO = 3; 
+	public static  int LEFT_ENCODER_ONE = 0; 
+	public static  int LEFT_ENCODER_TWO = 1; 
+	public static  int RIGHT_ENCODER_ONE = 2; 
+	public static  int RIGHT_ENCODER_TWO = 3; 
 
-	public static final int ELEVATOR = 0; 
+	public static  int ELEVATOR = 0; 
 
 	//ball actuator thing 
-	public static final int ARM_ACTUATOR = 0; 
+	public static  int ARM_ACTUATOR = 0; 
 	//fly wheels 
-	public static final int FLY = 0; 
+	public static  int FLY = 0; 
 
-	public static final int ELEVATOR_POSITION_SLOT = 0; 
-	public static final int ELEVATOR_VELOCITY_SLOT = 1; 
-	public static final double ELEVATOR_ARBFEEDFWD = 0.0; 
+	public static  int ELEVATOR_POSITION_SLOT = 0; 
+	public static  int ELEVATOR_VELOCITY_SLOT = 1; 
+	public static  double ELEVATOR_ARBFEEDFWD = 0.0; 
+
+	// TODO: TUNE PID
 	// Elevator manual velocity PID 
-	public static final double elevator_velocity_kF = 0.0;
-	public static final double elevator_velocity_kP = 0.0; 
-	public static final double elevator_velocity_kI = 0.0; 
-	public static final double elevator_velocity_kD = 0.0; 
+	public static double elevator_velocity_kF = 0.0;
+	public static double elevator_velocity_kP = 0.0; 
+	public static double elevator_velocity_kI = 0.0; 
+	public static  double elevator_velocity_kD = 0.0; 
 
 	// elevator position PID 
-	public static final double elevator_position_kF = 0.0; 
-	public static final double elevator_position_kP = 0.0; 
-	public static final double elevator_position_kI = 0.0; 
-	public static final double elevator_position_kD = 0.0; 
+	public static  double elevator_position_kF = 0.0; 
+	public static  double elevator_position_kP = 0.0; 
+	public static  double elevator_position_kI = 0.0; 
+	public static  double elevator_position_kD = 0.0; 
 
-	public static final int ARM_POSITION_SLOT = 0; 
-	public static final int ARM_VELOCITY_SLOT = 1;
+	public static  int ARM_POSITION_SLOT = 0; 
+	public static  int ARM_VELOCITY_SLOT = 1;
+
+	// TODO: TUNE PID
 	// arm position PID 
-	public static final double arm_position_kF = 0.0; 
-	public static final double arm_position_kP = 0.0; 
-	public static final double arm_position_kI = 0.0; 
-	public static final double arm_position_kD = 0.0;
+	public static  double arm_position_kF = 0.0; 
+	public static  double arm_position_kP = 0.0; 
+	public static  double arm_position_kI = 0.0; 
+	public static  double arm_position_kD = 0.0;
 
-	public static final double arm_velocity_kF = 0.0; 
-	public static final double arm_velocity_kP = 0.0; 
-	public static final double arm_velocity_kI = 0.0; 
-	public static final double arm_velocity_kD = 0.0;
+	public static  double arm_velocity_kF = 0.0; 
+	public static  double arm_velocity_kP = 0.0; 
+	public static  double arm_velocity_kI = 0.0; 
+	public static  double arm_velocity_kD = 0.0;
 
-	public static final double kP = 0.5; 
-	public static final double kI = 0.3; 
-	public static final double kD = 0.4; 
+	public static  double kP = 0.5; 
+	public static  double kI = 0.3; 
+	public static  double kD = 0.4; 
 	
-	public static final double TOLERANCE = 0.5; 
-	public static final double ALIGN_STEADY_TIME = 100; 
+	public static  double TOLERANCE = 0.5; 
+	public static  double ALIGN_STEADY_TIME = 100; 
 	
-	public static final double SPEED = 0.50; 
+	public static  double SPEED = 0.50; 
 	
 	public static boolean open = true; 
 	

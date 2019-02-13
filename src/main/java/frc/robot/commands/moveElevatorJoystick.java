@@ -6,56 +6,45 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
-import frc.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 
-public class changePipeline extends Command {
-
-  int desiredPipeline;
-
-  public changePipeline(int desiredPipeline) {
+public class moveElevatorJoystick extends Command {
+  public moveElevatorJoystick() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    this.desiredPipeline = desiredPipeline;
-
-    requires(Robot.vision);
+    requires(Robot.elevator);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    // if(desiredPipeline == 0) {Robot.vision.switchToTarget();}
-    // else if(desiredPipeline == 1) {Robot.vision.switchToBall();}
-    Robot.vision.changePipeline(desiredPipeline);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.vision.changePipeline(desiredPipeline);
-
+    double power = -Robot.oi.controller.getY(); 
+    SmartDashboard.putNumber("Power applied to elevator", power);
+    Robot.elevator.setPower(power); 
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.vision.changePipeline(desiredPipeline);
-
   }
-
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.vision.changePipeline(desiredPipeline);
-
   }
 }

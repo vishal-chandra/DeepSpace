@@ -147,9 +147,9 @@ public class OI {
 		c4.whenPressed(new autoAlign()); 
 		c7.whileHeld(new driveStraight(-0.8, -0.8));
 		c8.whileHeld(new driveStraight(0.8, 0.8));
-		c6.whenPressed(new followTarget());
-		c9.whenPressed(new changePipeline(0));
-		c10.whenPressed(new changePipeline(1));
+		//c6.whenPressed(new followTarget());
+		//c9.whenPressed(new changePipeline(0));
+		//c10.whenPressed(new changePipeline(1));
 
 //		c6.whenPressed(new toggleClaw());
 		

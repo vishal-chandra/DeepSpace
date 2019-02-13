@@ -51,7 +51,7 @@ public class Robot extends TimedRobot {
 		//grabby = new Claw(); 
 		vision = new Vision(); 
 		//elevator = new Elevator(0); 
-		arm = new Arm(); 
+		//arm = new Arm(); 
 
 		oi = new OI();
 //		chooser.addDefault("Default Auto", new ExampleCommand());

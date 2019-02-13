@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.moveElevatorJoystick;
 import frc.robot.commands.setElevator;
 
 /**
@@ -26,6 +27,7 @@ public class Elevator extends Subsystem {
 
   WPI_TalonSRX elevator; 
   public double position; 
+  double arbfeedfwd; 
 
 
   public Elevator(double position){
@@ -62,7 +64,10 @@ public class Elevator extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new setElevator());
+    //setDefaultCommand(new setElevator());
+    
+    // moveElevatorJoystick is for finding arbitrary feed forwardd to use with position control
+    setDefaultCommand(new moveElevatorJoystick()); 
   }
 
 
@@ -77,12 +82,18 @@ public class Elevator extends Subsystem {
 
   */
 
-  public void setPosition(){
-      elevator.set(ControlMode.Position, this.position); 
+  public void setPosition(double setpoint){
+     // elevator.set(ControlMode.position, setpoint, Demandtype.ArbitraryFeedForward, arbfeedfwd)
+
+      elevator.set(ControlMode.Position, setpoint); 
   }
 
   public void setSpeed(double speed){
     elevator.set(ControlMode.Velocity, speed); 
+  }
+
+  public void setPower(double power){
+    elevator.set(ControlMode.PercentOutput, power); 
   }
 
   public void raiseElevator(){
@@ -126,6 +137,50 @@ public class Elevator extends Subsystem {
   }
   public void updateSmartDashboard(){
     SmartDashboard.putNumber("Elevator Position:", getPosition()); 
-		SmartDashboard.putNumber("Elevator Speed: ", getSpeed());
+    SmartDashboard.putNumber("Elevator Speed: ", getSpeed());
+
+
+    //displayPID();
+    
+  }
+  // call if tuning PID in initialize
+  public void displayPID(){
+    SmartDashboard.putNumber("Elevator Position kP", RobotMap.elevator_position_kP);
+    SmartDashboard.putNumber("Elevator Position kI", RobotMap.elevator_position_kI); 
+    SmartDashboard.putNumber("Elevator Position kD", RobotMap.elevator_position_kD); 
+    SmartDashboard.putNumber("Elevator position setPoint:",  this.position); 
+
+  }
+  // call if tuning PID in execute
+  public void tune(){
+    double sdkP = SmartDashboard.getNumber("Elevator Position kP", RobotMap.elevator_position_kP); 
+    double sdkI = SmartDashboard.getNumber("Elevator Position kI", RobotMap.elevator_position_kI); 
+    double sdkD = SmartDashboard.getNumber("Elevator Position kD", RobotMap.elevator_position_kD); 
+
+    double setpoint = SmartDashboard.getNumber("Elevator position setPoint:", this.position); 
+
+    if(sdkP != RobotMap.elevator_position_kP) {
+      RobotMap.elevator_position_kP = sdkP; 
+      // change slot when doing velocity tuning
+      elevator.config_kP(RobotMap.ELEVATOR_POSITION_SLOT, sdkP);
+    }
+    if(sdkI != RobotMap.elevator_position_kI) {
+      RobotMap.elevator_position_kI = sdkI;
+      // change slot when doing velocity tuning
+ 
+      elevator.config_kI(RobotMap.ELEVATOR_POSITION_SLOT, sdkI);
+
+    }
+    if(sdkD != RobotMap.elevator_position_kD) {
+      RobotMap.elevator_position_kD = sdkD;
+      // change slot when doing velocity tuning
+
+      elevator.config_kD(RobotMap.ELEVATOR_POSITION_SLOT, sdkD);
+
+
+    }
+    
+    if(setpoint != this.position) this.position = setpoint; 
+
   }
 }

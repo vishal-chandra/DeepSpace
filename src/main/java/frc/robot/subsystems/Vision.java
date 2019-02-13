@@ -101,7 +101,9 @@ public class Vision extends Subsystem {
 	public void changePipeline(int pipeline){
 		table.getEntry("pipeline").setNumber(pipeline); 
 	}
-
+	public double getPipe(){
+		return table.getEntry("getpipe").getDouble(0); 
+	}
 	public double leftUltra(){
 		return (leftUltra.getVoltage() * 1000) * mV_T0_mm;
 	}
@@ -109,6 +111,7 @@ public class Vision extends Subsystem {
 	public double rightUltra(){
 		return (rightUltra.getVoltage() * 1000) * mV_T0_mm; 
 	}
+	
 	
 	public void getPhotoSensorValues()
 	{
@@ -141,7 +144,8 @@ public class Vision extends Subsystem {
     
     public void updateSmartDashboard(){
    		SmartDashboard.putNumber("Left Ultra:", leftUltra()); 
-   		SmartDashboard.putNumber("Right Ultra:",  rightUltra()); 
+		SmartDashboard.putNumber("Right Ultra:",  rightUltra()); 
+		SmartDashboard.putNumber("Pipeline: ", getPipe()); 
    	//SmartDashboard.putNumber("LimelightArea",  area); 
     }
 }
