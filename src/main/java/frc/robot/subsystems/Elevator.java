@@ -11,8 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.moveElevatorJoystick;
@@ -29,6 +28,10 @@ public class Elevator extends Subsystem {
   public double position; 
   double arbfeedfwd; 
 
+  DigitalInput elevator_down; 
+  DigitalInput elevator_up; 
+  DigitalInput X; 
+  DigitalInput Y; 
 
   public Elevator(double position){
     this.position = position; 
@@ -39,6 +42,7 @@ public class Elevator extends Subsystem {
     elevator.configFactoryDefault();
     elevator.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
     //elevator.setSensorPhase(true);
+    elevator.setInverted(true); 
     
     elevator.getSensorCollection().setQuadraturePosition(0, 30);
     
@@ -56,6 +60,10 @@ public class Elevator extends Subsystem {
       RobotMap.elevator_velocity_kP, RobotMap.elevator_velocity_kI,
       RobotMap.elevator_velocity_kD);
 
+      elevator_up = new DigitalInput(3); 
+      elevator_down = new DigitalInput(4); 
+      X = new DigitalInput(5); 
+      Y = new DigitalInput(6); 
     
 
   }
@@ -139,7 +147,10 @@ public class Elevator extends Subsystem {
     SmartDashboard.putNumber("Elevator Position:", getPosition()); 
     SmartDashboard.putNumber("Elevator Speed: ", getSpeed());
 
-
+    SmartDashboard.putBoolean("Elevator up:", elevator_up.get()); 
+    SmartDashboard.putBoolean("Elevator down:", elevator_down.get()); 
+    SmartDashboard.putBoolean("X", X.get()); 
+    SmartDashboard.putBoolean("Y", Y.get()); 
     //displayPID();
     
   }

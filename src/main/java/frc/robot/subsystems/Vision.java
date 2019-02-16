@@ -21,6 +21,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
  */
 public class Vision extends Subsystem {
 
+
+	public int pipeline = 0; 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	public UsbCamera cam0; 
@@ -49,6 +51,7 @@ public class Vision extends Subsystem {
 	NetworkTableEntry tx; 
 	NetworkTableEntry ty; 
 	NetworkTableEntry ta; 
+	NetworkTableEntry pipe; 
 	public double x, y, area = 0.0; 
 	
 //	public MjpegServer server = new MjpegServer("Robot camera", 1189); 
@@ -80,6 +83,7 @@ public class Vision extends Subsystem {
 		tx = table.getEntry("tx"); 
 		ty = table.getEntry("ty"); 
 		ta = table.getEntry("ta"); 
+		pipe = table.getEntry("getpipe"); 
 
 		leftSensor = new DigitalInput(0);
 		centerSensor = new DigitalInput(1);
@@ -102,7 +106,7 @@ public class Vision extends Subsystem {
 		table.getEntry("pipeline").setNumber(pipeline); 
 	}
 	public double getPipe(){
-		return table.getEntry("getpipe").getDouble(0); 
+		return pipe.getDouble(0); 
 	}
 	public double leftUltra(){
 		return (leftUltra.getVoltage() * 1000) * mV_T0_mm;
@@ -146,6 +150,8 @@ public class Vision extends Subsystem {
    		SmartDashboard.putNumber("Left Ultra:", leftUltra()); 
 		SmartDashboard.putNumber("Right Ultra:",  rightUltra()); 
 		SmartDashboard.putNumber("Pipeline: ", getPipe()); 
+		// for testing, to make sure buttons work 
+		SmartDashboard.putNumber("FAKE PIPLINE:", pipeline); 
    	//SmartDashboard.putNumber("LimelightArea",  area); 
     }
 }

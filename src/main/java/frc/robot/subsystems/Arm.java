@@ -36,7 +36,7 @@ public class Arm extends Subsystem {
 	public Arm(){
 //		arm = new WPI_TalonSRX(RobotMap.ARM_MOTOR); 
         fly = new Talon(RobotMap.FLY);
-        arm = new WPI_TalonSRX(RobotMap.ARM_MOTOR) ;
+        arm = new WPI_TalonSRX(RobotMap.ARM_ACTUATOR) ;
         arm.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
         arm.configNominalOutputForward(0, 30);
         arm.configNominalOutputReverse(0, 30);
@@ -58,8 +58,8 @@ public class Arm extends Subsystem {
 //		
 //		bodyUp = new DigitalInput(RobotMap.BODY_UP_SWITCH); 
 //		bodyDown = new DigitalInput(RobotMap.BODY_DOWN_SWITCH); 
-//		armUp = new DigitalInput(RobotMap.ARM_UP_SWITCH); 
-//		armDown = new DigitalInput(RobotMap.ARM_DOWN_SWITCH); 
+		armUp = new DigitalInput(7); 
+		armDown = new DigitalInput(8); 
 
 		
 		
@@ -83,12 +83,12 @@ public class Arm extends Subsystem {
       }
 
     public void raiseArm(){
-    	arm.set(ControlMode.PercentOutput, 0.4);
+    	arm.set(ControlMode.PercentOutput, 0.2);
 //    	arm.set(0.1); 	
     }
     
     public void lowerArm(){
-    	arm.set(ControlMode.PercentOutput, -0.4);
+    	arm.set(ControlMode.PercentOutput, -0.2);
 //    	arm.set(-0.1);
     }
     
@@ -120,10 +120,16 @@ public class Arm extends Subsystem {
         fly.set(-0.5); 
     }
 
+    public void flyStop(){
+        fly.set(0.0); 
+    }
+
     public void setSlot(int slot){
         arm.selectProfileSlot(slot, 0);
       }
     public void updateSmartDashboard(){
+        SmartDashboard.putBoolean("arm up: ", armUp.get()); 
+        SmartDashboard.putBoolean("arm down:", armDown.get()); 
 
     	SmartDashboard.putNumber("Arm Encoder:", getArmEncoder()); 
 

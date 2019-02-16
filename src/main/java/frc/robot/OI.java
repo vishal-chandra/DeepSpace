@@ -7,6 +7,8 @@ import frc.robot.commands.driveBaseSwitchDirections;
 
 
 import frc.robot.commands.driveStraight;
+import frc.robot.commands.flyShoot;
+import frc.robot.commands.flySuck;
 import frc.robot.commands.followTarget;
 import frc.robot.commands.rotateClockwise;
 import frc.robot.commands.rotateCounterClockwise;
@@ -145,40 +147,21 @@ public class OI {
 		c2.whileHeld(new rotateCounterClockwise());
 		c3.whenPressed(new turnRight90()); 
 		c4.whenPressed(new autoAlign()); 
-		c7.whileHeld(new driveStraight(-0.8, -0.8));
-		c8.whileHeld(new driveStraight(0.8, 0.8));
+		//c7.whileHeld(new driveStraight(-0.8, -0.8));
+		//c8.whileHeld(new driveStraight(0.8, 0.8));
 		//c6.whenPressed(new followTarget());
 		//c9.whenPressed(new changePipeline(0));
 		//c10.whenPressed(new changePipeline(1));
 
-//		c6.whenPressed(new toggleClaw());
 		
 //		c8.whenPressed(new streamCameras());
-		
-//		c5.whileHeld(new armRaise());
-//		c7.whileHeld(new armLower());
-		
-		
-		
+		c6.whileHeld(new flySuck()); 
+		c8.whileHeld(new flyShoot());
+		c5.whileHeld(new armRaise());
+		c7.whileHeld(new armLower()); 
 		
 		
-		/* TRASH CONTROLS */
-		//l7.whenPressed(new resetClimberBoolean());
-		//r1.whenPressed(new visionSwitchCameras());
-//		l1.whenPressed(new visionSwitchCameras());
-		//r1.whenActive(new visionSwitchCameras());
-//		c9.whenPressed(new intakeFlapOpen());
-//		c10.whenPressed(new intakeFlapClose()); 
 		
-//		c5.whenPressed(new pushGearOut());
-//		c7.whenPressed(new pushGearIn()); 
-		
-//		c5.whenActive(new pushGearOut());
-//		c7.whenActive(new pushGearIn()); 
-//		c5.toggleWhenPressed(new pushGearOut());
-//	c7.toggleWhenPressed(new pushGearIn()); 
-//
-//		c5.whileHeld(new pushGearOut());
-//		c7.whileHeld(new pushGearIn()); 
+	
 	}
 }

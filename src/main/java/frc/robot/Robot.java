@@ -48,10 +48,9 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		driveTrain = new DriveTrain(); 
-		//grabby = new Claw(); 
 		vision = new Vision(); 
-		//elevator = new Elevator(0); 
-		//arm = new Arm(); 
+		elevator = new Elevator(0); 
+		arm = new Arm(); 
 
 		oi = new OI();
 //		chooser.addDefault("Default Auto", new ExampleCommand());
@@ -144,8 +143,10 @@ public class Robot extends TimedRobot {
 	
 	public void updateSmartDashboard(){
 		driveTrain.updateSmartDashboard();
+		elevator.updateSmartDashboard(); 
 		vision.updateSmartDashboard();
-		//arm.updateSmartDashboard();
+
+		arm.updateSmartDashboard();
 		SmartDashboard.putBoolean("Open:", RobotMap.open); 
 		// SmartDashboard.putNumber("right trigger", oi.xbox.getTriggerAxis(Hand.kRight));
 		// SmartDashboard.putNumber("left trigger", oi.xbox.getTriggerAxis(Hand.kLeft));

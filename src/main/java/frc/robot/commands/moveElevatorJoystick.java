@@ -7,6 +7,8 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.GenericHID;
+
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
@@ -26,7 +28,7 @@ public class moveElevatorJoystick extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double power = -Robot.oi.controller.getY(); 
+    double power = -Robot.oi.xbox.getY(GenericHID.Hand.kRight); 
     SmartDashboard.putNumber("Power applied to elevator", power);
     Robot.elevator.setPower(power); 
   }

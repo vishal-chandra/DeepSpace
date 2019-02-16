@@ -33,7 +33,8 @@ public class RobotMap {
 	public static  int RIGHT_ENCODER_ONE = 2; 
 	public static  int RIGHT_ENCODER_TWO = 3; 
 
-	public static  int ELEVATOR = 0; 
+	// elevator motor controlle
+	public static  int ELEVATOR = 5; 
 
 	//ball actuator thing 
 	public static  int ARM_ACTUATOR = 0; 
@@ -86,6 +87,6 @@ public class RobotMap {
 	public static boolean camOneStart = true; 
 	public static boolean camTwoStart = true; 
 	
-	public static int ARM_MOTOR = 1; 
+	//public static int ARM_MOTOR = 1; 
 
 }
