@@ -3,16 +3,21 @@ package frc.robot.subsystems;
 import frc.robot.RobotMap;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import frc.robot.commands.setArm;
+import frc.robot.commands.moveElevatorJoystick;
 
 /**
  *
@@ -23,27 +28,46 @@ public class Arm extends Subsystem {
     // here. Call these from Commands.
 	
 	
-    WPI_TalonSRX arm; 
+    public WPI_TalonSRX arm; 
     SpeedController fly; 
+    Preferences preferences; 
  
-	DigitalInput armUp; 
-    DigitalInput armDown; 
+	public DigitalInput armUp; 
+    public DigitalInput armDown; 
+    double MAX_ARM_POSITION = -1700; 
     public double position;
-    DigitalInput ball_intake;
-    DigitalInput hatch_pickup;
+    public DigitalInput ball_intake;
+    public DigitalInput hatch_pickup;
 
-	public Arm(){
+    double angle; 
+
+	public Arm(double position){
+        preferences = Preferences.getInstance();
+        preferences.putDouble("Arm Position kP", 0.001); 
+        preferences.putDouble("Arm Position kI", 0.0); 
+
+        preferences.putDouble("Arm Position kD", 0.0); 
+        preferences.putDouble("Arm position setPoint:", position); 
+
+
+
 //		arm = new WPI_TalonSRX(RobotMap.ARM_MOTOR); 
+        this.position = position; 
         fly = new Talon(RobotMap.FLY);
         arm = new WPI_TalonSRX(RobotMap.ARM_ACTUATOR) ;
 
         ball_intake = new DigitalInput(RobotMap.BALL_INTAKE_SWITCH);
         hatch_pickup = new DigitalInput(RobotMap.HATCH_PICKUP_SWITCH);
+        //armUp = new DigitalInput(RobotMap.ARM_UP_SWITCH); 
+        //armDown = new DigitalInput(RobotMap.ARM_DOWN_SWITCH); 
+        
         arm.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
         arm.configNominalOutputForward(0, 30);
         arm.configNominalOutputReverse(0, 30);
-        arm.configPeakOutputForward(0.5, 30); 
-        arm.configPeakOutputReverse(-0.5, 30);
+        arm.configPeakOutputForward(1.0, 30); 
+        arm.configPeakOutputReverse(-1.0, 30);
+        arm.getSensorCollection().setQuadraturePosition(0, 30);  
+
 
         // POSITION: 0 
     this.setPID(RobotMap.ARM_POSITION_SLOT, RobotMap.arm_position_kF, 
@@ -60,8 +84,7 @@ public class Arm extends Subsystem {
 //		
 //		bodyUp = new DigitalInput(RobotMap.BODY_UP_SWITCH); 
 //		bodyDown = new DigitalInput(RobotMap.BODY_DOWN_SWITCH); 
-		armUp = new DigitalInput(RobotMap.ARM_UP_SWITCH); 
-		armDown = new DigitalInput(RobotMap.ARM_DOWN_SWITCH); 
+		
 
 		
 		
@@ -70,21 +93,26 @@ public class Arm extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
+        //setDefaultCommand(new setArm()); 
+        //setDefaultCommand(new moveElevatorJoystick());
     }
     
     
-    public void setPosition(){
+    public void setPosition(double setpoint){
         //arm.selectProfileSlot(RobotMap.ARM_POSITION_SLOT, 0);
-    	arm.set(ControlMode.Position, this.position);
+        arm.set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, Math.cos(this.getArmEncoder() / 4096.0 * 360) * 0.165); 
+
+        //arm.set(ControlMode.Position, this.position);
     }
+    
 
     public void setSpeed(double speed){
         //arm.selectProfileSlot(RobotMap.ARM_VELOCITY_SLOT, 0);
         arm.set(ControlMode.Velocity, speed); 
-      }
+    }
 
     public void raiseArm(){
-        arm.set(ControlMode.PercentOutput, 0.33);	
+        arm.set(ControlMode.PercentOutput, 0.40);	
     }
     
     public void lowerArm(){
@@ -131,19 +159,17 @@ public class Arm extends Subsystem {
     public boolean getHatch(){
         return hatch_pickup.get(); 
     }
+
     public void setSlot(int slot){
         arm.selectProfileSlot(slot, 0);
-      }
+    }
     public void updateSmartDashboard(){
-        SmartDashboard.putBoolean("arm up: ", armUp.get()); 
-        SmartDashboard.putBoolean("arm down:", armDown.get()); 
+        //SmartDashboard.putBoolean("arm up: ", armUp.get()); 
+        //SmartDashboard.putBoolean("arm down:", armDown.get()); 
         SmartDashboard.putBoolean("get ball" , getBall()); 
         SmartDashboard.putBoolean("get hatch", getHatch());
 
     	SmartDashboard.putNumber("Arm Encoder:", getArmEncoder()); 
-
-    	
-    	
     }
 
     public void displayPID(){
@@ -152,14 +178,19 @@ public class Arm extends Subsystem {
         SmartDashboard.putNumber("Arm Position kD", RobotMap.arm_position_kD); 
         SmartDashboard.putNumber("Arm position setPoint:",  this.position); 
     
-      }
+    }
       // call if tuning PID in execute
-      public void tune(){
-        double sdkP = SmartDashboard.getNumber("Arm Position kP", RobotMap.arm_position_kP); 
-        double sdkI = SmartDashboard.getNumber("Arm Position kI", RobotMap.arm_position_kI); 
-        double sdkD = SmartDashboard.getNumber("Arm Position kD", RobotMap.arm_position_kD); 
+    public void tune(){
+        // double sdkP = SmartDashboard.getNumber("Arm Position kP", RobotMap.arm_position_kP); 
+        // double sdkI = SmartDashboard.getNumber("Arm Position kI", RobotMap.arm_position_kI); 
+        // double sdkD = SmartDashboard.getNumber("Arm Position kD", RobotMap.arm_position_kD); 
     
-        double setpoint = SmartDashboard.getNumber("Arm position setPoint:", this.position); 
+        // double setpoint = SmartDashboard.getNumber("Arm position setPoint:", this.position); 
+        double sdkP = preferences.getDouble("Arm Position kP", RobotMap.arm_position_kP); 
+        double sdkI = preferences.getDouble("Arm Position kI", RobotMap.arm_position_kI); 
+        double sdkD = preferences.getDouble("Arm Position kD", RobotMap.arm_position_kD); 
+    
+        double setpoint = preferences.getDouble("Arm position setPoint:", this.position); 
     
         if(sdkP != RobotMap.arm_position_kP) {
           RobotMap.arm_position_kP = sdkP; 
@@ -184,7 +215,17 @@ public class Arm extends Subsystem {
         
         if(setpoint != this.position) this.position = setpoint; 
     
-      }
+    }
+
+    //arb ff
+    public void setPower(double power){
+        arm.set(ControlMode.PercentOutput, power); 
+    }
+
+    public double getAngle()
+    {
+        return 90 - getArmEncoder() * (360/4096); //4096 ticks per 360 degrees
+    }
     
     
 }

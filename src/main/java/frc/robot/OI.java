@@ -103,16 +103,16 @@ public class OI {
 		 
 
 //	public static Joystick xbox = new Joystick(2);
-//		Button x1 = new JoystickButton(xbox, 1);
-//		Button x2 = new JoystickButton(xbox, 2);
-//		Button x3 = new JoystickButton(xbox, 3);
-//		Button x4 = new JoystickButton(xbox, 4);
-//		Button x5 = new JoystickButton(xbox, 5);
-//		Button x6 = new JoystickButton(xbox, 6);
-//		Button x7 = new JoystickButton(xbox, 7);
-//		Button x8 = new JoystickButton(xbox, 8);
-//		Button x9 = new JoystickButton(xbox, 9);
-//		Button x10 = new JoystickButton(xbox, 10);
+		Button x1 = new JoystickButton(xbox, 1);
+		Button x2 = new JoystickButton(xbox, 2);
+		Button x3 = new JoystickButton(xbox, 3);
+		Button x4 = new JoystickButton(xbox, 4);
+		Button x5 = new JoystickButton(xbox, 5);
+		Button x6 = new JoystickButton(xbox, 6);
+		Button x7 = new JoystickButton(xbox, 7);
+		Button x8 = new JoystickButton(xbox, 8);
+		Button x9 = new JoystickButton(xbox, 9);
+		Button x10 = new JoystickButton(xbox, 10);
 		
 		// 1: A
 		// 2: B

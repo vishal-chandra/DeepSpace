@@ -64,6 +64,7 @@ public class RobotMap {
 	public static  double elevator_velocity_kD = 0.0; 
 
 	// elevator position PID 
+	public static double ARM_ARBFEEDFWD = 0.0;
 	public static  double elevator_position_kF = 0.0; 
 	public static  double elevator_position_kP = 0.0; 
 	public static  double elevator_position_kI = 0.0; 
@@ -75,7 +76,7 @@ public class RobotMap {
 	// TODO: TUNE PID
 	// arm position PID 
 	public static  double arm_position_kF = 0.0; 
-	public static  double arm_position_kP = 0.0; 
+	public static  double arm_position_kP = 0.001; 
 	public static  double arm_position_kI = 0.0; 
 	public static  double arm_position_kD = 0.0;
 

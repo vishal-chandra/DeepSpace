@@ -25,8 +25,7 @@ public class flySuck extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.arm.intake(); 
-
+    if(!Robot.arm.ball_intake.get()) Robot.arm.intake(); 
   }
 
   // Make this return true when this Command no longer needs to run execute()

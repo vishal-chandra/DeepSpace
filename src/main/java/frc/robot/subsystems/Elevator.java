@@ -32,9 +32,9 @@ public class Elevator extends Subsystem {
   public double position; 
   double arbfeedfwd; 
 
-  DigitalInput elevator_down; 
-  DigitalInput carriage_up; 
-  DigitalInput stage2_up;
+  public DigitalInput elevator_down; 
+  public DigitalInput carriage_up; 
+  public DigitalInput stage2_up;
 
   public double MAX_ENCODER_POSITION = 48119; 
 
@@ -49,12 +49,12 @@ public class Elevator extends Subsystem {
     //elevator.setSensorPhase(true);
     elevator.setInverted(true); 
     
-    elevator.getSensorCollection().setQuadraturePosition(0, 30);
+    elevator.getSensorCollection().setQuadraturePosition(0, 30);  
     
     elevator.configNominalOutputForward(0, 30);
     elevator.configNominalOutputReverse(0, 30);
-    elevator.configPeakOutputForward(0.5, 30); 
-    elevator.configPeakOutputReverse(-0.5, 30);
+    elevator.configPeakOutputForward(1.0, 30); 
+    elevator.configPeakOutputReverse(-1.0, 30);
 
     // POSITION: 0 
     this.setPID(RobotMap.ELEVATOR_POSITION_SLOT, RobotMap.elevator_position_kF, 
@@ -75,10 +75,10 @@ public class Elevator extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new setElevator());
+    //setDefaultCommand(new setElevator());
     
     // moveElevatorJoystick is for finding arbitrary feed forwardd to use with position control
-    //setDefaultCommand(new moveElevatorJoystick()); 
+    setDefaultCommand(new moveElevatorJoystick()); //arb ff
   }
 
 
@@ -113,9 +113,13 @@ public class Elevator extends Subsystem {
   }
 
   public void lowerElevator(){
-    elevator.set(ControlMode.PercentOutput, -0.1); 
+    elevator.set(ControlMode.PercentOutput, -0.4); 
 
 
+  }
+
+  public void stopElevator(){
+    elevator.set(ControlMode.PercentOutput, 0.0); 
   }
   public void resetEncoder(){
     elevator.getSensorCollection().setQuadraturePosition(0, 10);

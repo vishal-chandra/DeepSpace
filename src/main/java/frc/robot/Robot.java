@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-
+import frc.robot.commands.resetArm;
 //import frc.robot.commands.fillTanks;
 import frc.robot.commands.resetGyro;
 //import frc.robot.subsystems.Claw;
@@ -50,13 +50,13 @@ public class Robot extends TimedRobot {
 		driveTrain = new DriveTrain(); 
 		vision = new Vision(); 
 		elevator = new Elevator(0); 
-		arm = new Arm(); 
+		arm = new Arm(-800); 
 
 		oi = new OI();
 //		chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
-		
+		SmartDashboard.putData("Reset Arm", new resetArm()); 
         SmartDashboard.putData("Reset Gyro", new resetGyro());
         //SmartDashboard.putData("Fill:", new fillTanks());
 

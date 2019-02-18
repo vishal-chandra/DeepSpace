@@ -37,14 +37,14 @@ public class Vision extends Subsystem {
 	DigitalInput leftSensor;
 	DigitalInput centerSensor;
 	DigitalInput rightSensor;
-	public String sensorValues;
+	//public String sensorValues;
 
 	//Ultrasonic
 	AnalogInput leftUltra;
 	AnalogInput rightUltra;
 	double leftUltraDistance;
 	double rightUltraDistance;
-	final double mV_T0_mm = 5 / 4.88; // mm/mV
+	//final double mV_T0_mm = 5 / 4.88; // mm/mV
 
 
 	//Limelight
@@ -111,11 +111,16 @@ public class Vision extends Subsystem {
 		return pipe.getDouble(0); 
 	}
 	public double leftUltra(){
-		return (leftUltra.getVoltage() * 1000) * mV_T0_mm;
+		double mV = leftUltra.getVoltage() * 1000; 
+		double mm = mV / 4.88 * 5; 
+		return mm / 1000 * 3.28; // returns in feet  
+		//return (leftUltra.getVoltage() * 1000) * mV_T0_mm;
 	}
 
 	public double rightUltra(){
-		return (rightUltra.getVoltage() * 1000) * mV_T0_mm; 
+		double mV = rightUltra.getVoltage() * 1000; 
+		double mm = mV / 4.88 * 5; 
+		return mm / 1000 * 3.28; // returns in feet	
 	}
 	
 	//sensor value flipped: false --> true
@@ -131,13 +136,16 @@ public class Vision extends Subsystem {
 		return !rightSensor.get(); 
 	}
 
-	public void getPhotoSensorValues()
+	public String getPhotoSensorValues()
 	{
 		//if using ints 001 --> 1 so using strings
 		String left = Integer.toString(boolToInt(leftSensor.get()));
 		String center = Integer.toString(boolToInt(centerSensor.get()));
 		String right = Integer.toString(boolToInt((rightSensor.get())));
-		sensorValues = left + center + right;
+		String sensorValues = left + center + right;
+		SmartDashboard.putString("SensorValue:", sensorValues); 
+
+		return sensorValues; 
 	}
 
 	public int boolToInt(boolean b) { return b ? 1 : 0; }
@@ -165,7 +173,7 @@ public class Vision extends Subsystem {
 		SmartDashboard.putNumber("Right Ultra:",  rightUltra()); 
 		SmartDashboard.putNumber("Pipeline: ", getPipe()); 
 		// for testing, to make sure buttons work 
-		SmartDashboard.putNumber("FAKE PIPLINE:", pipeline); 
+		SmartDashboard.putNumber("FAKE PIPLINE:", this.pipeline); 
 
 		SmartDashboard.putBoolean("Left photo", getLeftPhoto());
 		SmartDashboard.putBoolean("Center photo", getMiddlePhoto()); 

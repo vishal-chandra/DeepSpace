@@ -25,10 +25,10 @@ public class changePipeline extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    // if(desiredPipeline == 0) {Robot.vision.switchToTarget();}
-    // else if(desiredPipeline == 1) {Robot.vision.switchToBall();}
+    if(desiredPipeline == 0) {Robot.vision.switchToTarget();}
+    else if(desiredPipeline == 1) {Robot.vision.switchToBall();}
     Robot.vision.pipeline = desiredPipeline;
-    Robot.vision.changePipeline(desiredPipeline);
+    // Robot.vision.changePipeline(desiredPipeline);
   }
 
   // Called repeatedly when this Command is scheduled to run

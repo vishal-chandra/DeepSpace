@@ -7,39 +7,53 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 import edu.wpi.first.wpilibj.GenericHID;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 
-public class moveElevatorJoystick extends Command {
-  public moveElevatorJoystick() {
+public class curvaturePIDControl extends Command {
+  double forward = 0; 
+  double turn = 0; 
+  double left_command = 0; 
+  double right_command = 0; 
+  double SKIM_GAIN = 0.5; 
+  public curvaturePIDControl() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.elevator);
+    requires(Robot.driveTrain); 
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    forward = -Robot.oi.xbox.getY(GenericHID.Hand.kLeft);
+    turn = Robot.oi.xbox.getX(GenericHID.Hand.kRight);
+
+    left_command = forward + turn; 
+    right_command = forward - turn; 
+
+    double adjusted_left = left_command + skim(right_command); 
+    double adjusted_right = right_command + skim(left_command); 
+
+    
+
+  }
+
+  double skim(double v){
+    if(v > 1.0){
+      return -((v - 1.0) * this.SKIM_GAIN); 
+    }
+    else if(v < -1.0){
+      return -((v + 1.0) * this.SKIM_GAIN);
+    }
+    return 0;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double power = -Robot.oi.xbox.getY(GenericHID.Hand.kRight); 
-    SmartDashboard.putNumber("Power applied to elevator", power);
-    if(power < 0){
-      if(Robot.arm.arm.getSensorCollection().isFwdLimitSwitchClosed() || Robot.arm.arm.getSensorCollection().isFwdLimitSwitchClosed()){
-          Robot.elevator.setPower(power); 
-      }
-      else Robot.elevator.setPower(power); 
-
-    }
-    else Robot.elevator.setPower(power); //arb ff
-    // if(power > 0 && !(Robot.elevator.carriage_up.get() && Robot.elevator.stage2_up.get())) Robot.elevator.setPower(power); 
-    // else if(power < 0 && !(Robot.elevator.elevator_down.get())) Robot.elevator.setPower(power); 
+    
 
   }
 

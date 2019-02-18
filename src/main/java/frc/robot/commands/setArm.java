@@ -33,7 +33,7 @@ public class setArm extends Command {
   protected void execute() {
     Robot.arm.tune();
 
-    Robot.arm.setPosition(); 
+    Robot.arm.setPosition(Robot.arm.position); 
   }
 
   // Make this return true when this Command no longer needs to run execute()

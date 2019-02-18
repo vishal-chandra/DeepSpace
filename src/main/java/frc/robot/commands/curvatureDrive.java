@@ -42,11 +42,11 @@ public class curvatureDrive extends Command {
 			Robot.vision.changePipeline(0);
 
 		}
-		if(OI.controller.getRawButton(10)){
+		else if(OI.controller.getRawButton(10)){
 			Robot.vision.changePipeline(1);
 
 		}
-		if(OI.controller.getRawButton(6)){
+		else if(OI.controller.getRawButton(6)){
 	    	SmartDashboard.putNumber("Follow: ", Robot.vision.x); 
 
 			double heading_error =  -(Robot.vision.x); 
@@ -64,28 +64,28 @@ public class curvatureDrive extends Command {
 	    	Robot.driveTrain.driveCertainAmounts(left_command, right_command);
 			
 		}
-		else if(OI.xbox.getAButton()){
+		else if(OI.xbox.getRawButton(1)){
 			
-			Robot.vision.getPhotoSensorValues();
-      		String value = Robot.vision.sensorValues;
+			// Robot.vision.getPhotoSensorValues();
+      		// String value = Robot.vision.sensorValues;
 
-     		 double angle = 0;
-    		 double speed = 0.25;
+     		//  double angle = 0;
+    		//  double speed = 0.25;
 
-      		if(value.equals("100")) angle = -0.15; //slight left
-      		else if(value.equals("110")) angle = -0.07; //very slight left
+      		// if(value.equals("100")) angle = -0.15; //slight left
+      		// else if(value.equals("110")) angle = -0.07; //very slight left
 
-      		else if(value.equals("001")) angle = 0.15; //slight right
-      		else if(value.equals("011")) angle = 0.7; //very slight right
+      		// else if(value.equals("001")) angle = 0.15; //slight right
+      		// else if(value.equals("011")) angle = 0.7; //very slight right
 
-     		else if(value.equals("010")) angle = 0; //go straight
-      		else if(value.equals("101") || value.equals("111") || value.equals("000")) 
-     		{
-          		angle = 0; 
-          		speed = 0; //stop, there's been an error
-     		}
+     		// else if(value.equals("010")) angle = 0; //go straight
+      		// else if(value.equals("101") || value.equals("111") || value.equals("000")) 
+     		// {
+          	// 	angle = 0; 
+          	// 	speed = 0; //stop, there's been an error
+     		// }
 
-			 Robot.driveTrain.curavtureDrive(speed, angle);
+			//  Robot.driveTrain.curavtureDrive(speed, angle);
 		}
 //		else if(OI.controller.getRawButton(8)){
 //			left_command = 0.5; 

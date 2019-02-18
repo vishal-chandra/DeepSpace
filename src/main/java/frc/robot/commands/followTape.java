@@ -2,9 +2,16 @@ package frc.robot.commands;
 import frc.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class followTape extends Command 
 {
+
+  double angle = 0;
+  double speed = 0.4;
+  String value;
+  boolean finished = false; 
+
   public followTape() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -15,17 +22,15 @@ public class followTape extends Command
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-      Robot.vision.getPhotoSensorValues();
+      value = Robot.vision.getPhotoSensorValues();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-      Robot.vision.getPhotoSensorValues();
-      String value = Robot.vision.sensorValues;
-
-      double angle = 0;
-      double speed = 0.25;
+      value = Robot.vision.getPhotoSensorValues();
+      //value = Robot.vision.sensorValues;
+      SmartDashboard.putString("Sensor values", value); 
 
       if(value.equals("100")) angle = -0.15; //slight left
       else if(value.equals("110")) angle = -0.07; //very slight left
@@ -38,6 +43,7 @@ public class followTape extends Command
       {
           angle = 0; 
           speed = 0; //stop, there's been an error
+          finished = true; 
       }
 
       Robot.driveTrain.curavtureDrive(speed, angle);
@@ -60,5 +66,6 @@ public class followTape extends Command
   @Override
   protected void interrupted() {
       Robot.driveTrain.stop();
+      end(); 
   }
 }
