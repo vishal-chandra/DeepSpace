@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import frc.robot.RobotMap;
 import frc.robot.commands.readNetworkTables;
 
 import edu.wpi.cscore.CvSink;
@@ -89,8 +90,8 @@ public class Vision extends Subsystem {
 		centerSensor = new DigitalInput(1);
 		rightSensor = new DigitalInput(2);	
 
-		leftUltra = new AnalogInput(1);
-		rightUltra = new AnalogInput(2);
+		leftUltra = new AnalogInput(RobotMap.LEFT_ULTRA);
+		rightUltra = new AnalogInput(RobotMap.RIGHT_ULTRA);
 	}
 
     public void initDefaultCommand() {
@@ -103,6 +104,7 @@ public class Vision extends Subsystem {
 	public void switchToTarget() {table.getEntry("pipeline").setNumber(0);}
 
 	public void changePipeline(int pipeline){
+		this.pipeline = pipeline;
 		table.getEntry("pipeline").setNumber(pipeline); 
 	}
 	public double getPipe(){
@@ -116,7 +118,19 @@ public class Vision extends Subsystem {
 		return (rightUltra.getVoltage() * 1000) * mV_T0_mm; 
 	}
 	
-	
+	//sensor value flipped: false --> true
+	public boolean getLeftPhoto(){
+		return !leftSensor.get(); 
+	}
+
+	public boolean getMiddlePhoto(){
+		return !centerSensor.get(); 
+	}
+
+	public boolean getRightPhoto(){
+		return !rightSensor.get(); 
+	}
+
 	public void getPhotoSensorValues()
 	{
 		//if using ints 001 --> 1 so using strings
@@ -152,6 +166,10 @@ public class Vision extends Subsystem {
 		SmartDashboard.putNumber("Pipeline: ", getPipe()); 
 		// for testing, to make sure buttons work 
 		SmartDashboard.putNumber("FAKE PIPLINE:", pipeline); 
+
+		SmartDashboard.putBoolean("Left photo", getLeftPhoto());
+		SmartDashboard.putBoolean("Center photo", getMiddlePhoto()); 
+		SmartDashboard.putBoolean("Right photo", getRightPhoto()); 
    	//SmartDashboard.putNumber("LimelightArea",  area); 
     }
 }

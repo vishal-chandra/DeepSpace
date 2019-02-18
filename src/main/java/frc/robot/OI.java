@@ -9,6 +9,7 @@ import frc.robot.commands.driveBaseSwitchDirections;
 import frc.robot.commands.driveStraight;
 import frc.robot.commands.flyShoot;
 import frc.robot.commands.flySuck;
+import frc.robot.commands.followTape;
 import frc.robot.commands.followTarget;
 import frc.robot.commands.rotateClockwise;
 import frc.robot.commands.rotateCounterClockwise;
@@ -145,20 +146,21 @@ public class OI {
 		// r1.toggleWhenPressed(new driveBaseSwitchDirections());
 		c1.whileHeld(new rotateClockwise());
 		c2.whileHeld(new rotateCounterClockwise());
-		c3.whenPressed(new turnRight90()); 
-		c4.whenPressed(new autoAlign()); 
+		//c3.whenPressed(new turnRight90()); 
+		//c4.whenPressed(new autoAlign()); 
 		//c7.whileHeld(new driveStraight(-0.8, -0.8));
 		//c8.whileHeld(new driveStraight(0.8, 0.8));
 		//c6.whenPressed(new followTarget());
-		//c9.whenPressed(new changePipeline(0));
-		//c10.whenPressed(new changePipeline(1));
+		c9.whenPressed(new changePipeline(0));
+		c10.whenPressed(new changePipeline(1));
 
-		
+		 
 //		c8.whenPressed(new streamCameras());
-		c6.whileHeld(new flySuck()); 
-		c8.whileHeld(new flyShoot());
+		c4.whileHeld(new flySuck()); 
+		c3.whileHeld(new flyShoot());
 		c5.whileHeld(new armRaise());
 		c7.whileHeld(new armLower()); 
+		//c6.whileHeld(new followTape());
 		
 		
 		

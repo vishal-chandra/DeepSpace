@@ -20,6 +20,14 @@ public class RobotMap {
 
 	
 
+	//Limit Switches
+	public static int BALL_INTAKE_SWITCH 	= 3;
+	public static int HATCH_PICKUP_SWITCH 	= 4;
+	public static int ARM_UP_SWITCH 		= 5;
+	public static int CARRIAGE_UP_SWITCH 	= 6;
+	public static int STAGE2_UP_SWITCH		= 7;
+	public static int ELEVATOR_DOWN_SWITCH 	= 8;
+	public static int ARM_DOWN_SWITCH 		= 9;
 
 	// MOTOR PORTS 
 	public static  int BACK_LEFT_MOTOR = 1; 
@@ -33,17 +41,20 @@ public class RobotMap {
 	public static  int RIGHT_ENCODER_ONE = 2; 
 	public static  int RIGHT_ENCODER_TWO = 3; 
 
+	public static int LEFT_ULTRA = 1; 
+	public static int RIGHT_ULTRA = 0; 
+
 	// elevator motor controlle
 	public static  int ELEVATOR = 5; 
 
 	//ball actuator thing 
-	public static  int ARM_ACTUATOR = 0; 
+	public static  int ARM_ACTUATOR = 6; 
 	//fly wheels 
 	public static  int FLY = 0; 
 
 	public static  int ELEVATOR_POSITION_SLOT = 0; 
 	public static  int ELEVATOR_VELOCITY_SLOT = 1; 
-	public static  double ELEVATOR_ARBFEEDFWD = 0.0; 
+	public static  double ELEVATOR_ARBFEEDFWD = 0.125; 
 
 	// TODO: TUNE PID
 	// Elevator manual velocity PID 

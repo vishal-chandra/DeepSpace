@@ -26,17 +26,19 @@ public class Arm extends Subsystem {
     WPI_TalonSRX arm; 
     SpeedController fly; 
  
-	
-	
-	
 	DigitalInput armUp; 
     DigitalInput armDown; 
     public double position;
+    DigitalInput ball_intake;
+    DigitalInput hatch_pickup;
 
 	public Arm(){
 //		arm = new WPI_TalonSRX(RobotMap.ARM_MOTOR); 
         fly = new Talon(RobotMap.FLY);
         arm = new WPI_TalonSRX(RobotMap.ARM_ACTUATOR) ;
+
+        ball_intake = new DigitalInput(RobotMap.BALL_INTAKE_SWITCH);
+        hatch_pickup = new DigitalInput(RobotMap.HATCH_PICKUP_SWITCH);
         arm.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
         arm.configNominalOutputForward(0, 30);
         arm.configNominalOutputReverse(0, 30);
@@ -58,8 +60,8 @@ public class Arm extends Subsystem {
 //		
 //		bodyUp = new DigitalInput(RobotMap.BODY_UP_SWITCH); 
 //		bodyDown = new DigitalInput(RobotMap.BODY_DOWN_SWITCH); 
-		armUp = new DigitalInput(7); 
-		armDown = new DigitalInput(8); 
+		armUp = new DigitalInput(RobotMap.ARM_UP_SWITCH); 
+		armDown = new DigitalInput(RobotMap.ARM_DOWN_SWITCH); 
 
 		
 		
@@ -72,23 +74,21 @@ public class Arm extends Subsystem {
     
     
     public void setPosition(){
-        arm.selectProfileSlot(RobotMap.ARM_POSITION_SLOT, 0);
+        //arm.selectProfileSlot(RobotMap.ARM_POSITION_SLOT, 0);
     	arm.set(ControlMode.Position, this.position);
     }
 
     public void setSpeed(double speed){
-        arm.selectProfileSlot(RobotMap.ARM_VELOCITY_SLOT, 0);
-
+        //arm.selectProfileSlot(RobotMap.ARM_VELOCITY_SLOT, 0);
         arm.set(ControlMode.Velocity, speed); 
       }
 
     public void raiseArm(){
-    	arm.set(ControlMode.PercentOutput, 0.2);
-//    	arm.set(0.1); 	
+        arm.set(ControlMode.PercentOutput, 0.33);	
     }
     
     public void lowerArm(){
-    	arm.set(ControlMode.PercentOutput, -0.2);
+    	arm.set(ControlMode.PercentOutput, 0.2);
 //    	arm.set(-0.1);
     }
     
@@ -124,18 +124,67 @@ public class Arm extends Subsystem {
         fly.set(0.0); 
     }
 
+    public boolean getBall(){
+        return ball_intake.get(); 
+    }
+
+    public boolean getHatch(){
+        return hatch_pickup.get(); 
+    }
     public void setSlot(int slot){
         arm.selectProfileSlot(slot, 0);
       }
     public void updateSmartDashboard(){
         SmartDashboard.putBoolean("arm up: ", armUp.get()); 
         SmartDashboard.putBoolean("arm down:", armDown.get()); 
+        SmartDashboard.putBoolean("get ball" , getBall()); 
+        SmartDashboard.putBoolean("get hatch", getHatch());
 
     	SmartDashboard.putNumber("Arm Encoder:", getArmEncoder()); 
 
     	
     	
     }
+
+    public void displayPID(){
+        SmartDashboard.putNumber("Arm Position kP", RobotMap.arm_position_kP);
+        SmartDashboard.putNumber("Arm Position kI", RobotMap.arm_position_kI); 
+        SmartDashboard.putNumber("Arm Position kD", RobotMap.arm_position_kD); 
+        SmartDashboard.putNumber("Arm position setPoint:",  this.position); 
+    
+      }
+      // call if tuning PID in execute
+      public void tune(){
+        double sdkP = SmartDashboard.getNumber("Arm Position kP", RobotMap.arm_position_kP); 
+        double sdkI = SmartDashboard.getNumber("Arm Position kI", RobotMap.arm_position_kI); 
+        double sdkD = SmartDashboard.getNumber("Arm Position kD", RobotMap.arm_position_kD); 
+    
+        double setpoint = SmartDashboard.getNumber("Arm position setPoint:", this.position); 
+    
+        if(sdkP != RobotMap.arm_position_kP) {
+          RobotMap.arm_position_kP = sdkP; 
+          // change slot when doing velocity tuning
+          arm.config_kP(RobotMap.ARM_POSITION_SLOT, sdkP);
+        }
+        if(sdkI != RobotMap.arm_position_kI) {
+          RobotMap.arm_position_kI = sdkI;
+          // change slot when doing velocity tuning
+     
+          arm.config_kI(RobotMap.ARM_POSITION_SLOT, sdkI);
+    
+        }
+        if(sdkD != RobotMap.arm_position_kD) {
+          RobotMap.arm_position_kD = sdkD;
+          // change slot when doing velocity tuning
+    
+          arm.config_kD(RobotMap.ARM_POSITION_SLOT, sdkD);
+    
+    
+        }
+        
+        if(setpoint != this.position) this.position = setpoint; 
+    
+      }
     
     
 }

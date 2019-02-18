@@ -8,8 +8,12 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -29,14 +33,15 @@ public class Elevator extends Subsystem {
   double arbfeedfwd; 
 
   DigitalInput elevator_down; 
-  DigitalInput elevator_up; 
-  DigitalInput X; 
-  DigitalInput Y; 
+  DigitalInput carriage_up; 
+  DigitalInput stage2_up;
+
+  public double MAX_ENCODER_POSITION = 48119; 
 
   public Elevator(double position){
     this.position = position; 
 
-    elevator = new WPI_TalonSRX(RobotMap.ELEVATOR); 
+    elevator = new WPI_TalonSRX(RobotMap.ELEVATOR);
 
     // encoder stuff 
     elevator.configFactoryDefault();
@@ -60,22 +65,20 @@ public class Elevator extends Subsystem {
       RobotMap.elevator_velocity_kP, RobotMap.elevator_velocity_kI,
       RobotMap.elevator_velocity_kD);
 
-      elevator_up = new DigitalInput(3); 
-      elevator_down = new DigitalInput(4); 
-      X = new DigitalInput(5); 
-      Y = new DigitalInput(6); 
+      carriage_up = new DigitalInput(RobotMap.CARRIAGE_UP_SWITCH); 
+      stage2_up = new DigitalInput(RobotMap.STAGE2_UP_SWITCH);
+      elevator_down = new DigitalInput(RobotMap.ELEVATOR_DOWN_SWITCH); 
     
-
   }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    //setDefaultCommand(new setElevator());
+    setDefaultCommand(new setElevator());
     
     // moveElevatorJoystick is for finding arbitrary feed forwardd to use with position control
-    setDefaultCommand(new moveElevatorJoystick()); 
+    //setDefaultCommand(new moveElevatorJoystick()); 
   }
 
 
@@ -91,9 +94,9 @@ public class Elevator extends Subsystem {
   */
 
   public void setPosition(double setpoint){
-     // elevator.set(ControlMode.position, setpoint, Demandtype.ArbitraryFeedForward, arbfeedfwd)
+     elevator.set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, RobotMap.ELEVATOR_ARBFEEDFWD); 
 
-      elevator.set(ControlMode.Position, setpoint); 
+      //elevator.set(ControlMode.Position, setpoint); 
   }
 
   public void setSpeed(double speed){
@@ -147,10 +150,9 @@ public class Elevator extends Subsystem {
     SmartDashboard.putNumber("Elevator Position:", getPosition()); 
     SmartDashboard.putNumber("Elevator Speed: ", getSpeed());
 
-    SmartDashboard.putBoolean("Elevator up:", elevator_up.get()); 
+    SmartDashboard.putBoolean("Carriage up:", carriage_up.get()); 
+    SmartDashboard.putBoolean("Second Stage up:", stage2_up.get());
     SmartDashboard.putBoolean("Elevator down:", elevator_down.get()); 
-    SmartDashboard.putBoolean("X", X.get()); 
-    SmartDashboard.putBoolean("Y", Y.get()); 
     //displayPID();
     
   }

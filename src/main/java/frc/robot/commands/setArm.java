@@ -22,6 +22,8 @@ public class setArm extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.arm.displayPID();
+
     Robot.arm.setSlot(RobotMap.ARM_POSITION_SLOT);
     
   }
@@ -29,6 +31,8 @@ public class setArm extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    Robot.arm.tune();
+
     Robot.arm.setPosition(); 
   }
 
