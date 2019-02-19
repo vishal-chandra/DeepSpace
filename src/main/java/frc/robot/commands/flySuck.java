@@ -14,12 +14,14 @@ public class flySuck extends Command {
   public flySuck() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    requires(Robot.arm); 
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.arm.intake(); 
+
+    if(!Robot.arm.ball_intake.get()) Robot.arm.intake(); 
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -31,7 +33,7 @@ public class flySuck extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return Robot.arm.ball_intake.get();
   }
 
   // Called once after isFinished returns true

@@ -1,12 +1,14 @@
 package frc.robot;
 
 import frc.robot.commands.armLower;
+import frc.robot.commands.armPower;
 import frc.robot.commands.armRaise;
 import frc.robot.commands.autoAlign;
 import frc.robot.commands.driveBaseSwitchDirections;
 
 
 import frc.robot.commands.driveStraight;
+import frc.robot.commands.elevatorLIDAR;
 import frc.robot.commands.flyShoot;
 import frc.robot.commands.flySuck;
 import frc.robot.commands.followTape;
@@ -126,36 +128,37 @@ public class OI {
 		// 10: right joystick 
 	public OI(){
 		
-	//	c6.whenPressed(new dumpFlapOpen());
-		//c8.whenPressed(new dumpFlapClose()); 
-//		l7.whenPressed(new dumpFlapOpen());
-//
-//		x3.whileHeld(new hopperCoil());
-//		x1.whileHeld(new hopperUnCoil());
-//		x2.whileHeld(new climber());
-//		x0.whenPressed(new climberReset());
-//		x8.toggleWhenPressed(new cameraOneInit());
-//		x9.toggleWhenPressed(new cameraTwoInit());
-//
-//		r1.toggleWhenPressed(new driveBaseSwitchDirections());
-		//l1.toggleWhenPressed(new visionSwitchCameras());
-		
+	
 		/* logitech controller */
 
 
 		// r1.toggleWhenPressed(new driveBaseSwitchDirections());
-		c1.whileHeld(new rotateClockwise());
-		c2.whileHeld(new rotateCounterClockwise());
+		//c1.whileHeld(new rotateClockwise());
+		//c2.whileHeld(new rotateCounterClockwise());
 		//c3.whenPressed(new turnRight90()); 
 		//c4.whenPressed(new autoAlign()); 
 		//c7.whileHeld(new driveStraight(-0.8, -0.8));
 		//c8.whileHeld(new driveStraight(0.8, 0.8));
 		//c6.whenPressed(new followTarget());
-		c9.whenPressed(new changePipeline(0));
-		c10.whenPressed(new changePipeline(1));
+		//c9.whenPressed(new changePipeline(0));
+		//c10.whenPressed(new changePipeline(1));
+
+		c1.whileHeld(new armPower(Robot.arm.HATCH_HIGH_POWER)); 
+		c2.whileHeld(new armPower(Robot.arm.HATCH_LOW_POWER)); 
+
+		c6.whileHeld(new armPower(Robot.arm.BALL_HIGH_POWER)); 
+
+		c8.whileHeld(new armPower(Robot.arm.NO_HATCH_LOW_POWER)); 
+
+		c9.whenPressed(new elevatorLIDAR(Robot.elevator.HATCH_PICKUP_LOW_LIDAR));
+		c10.whenPressed(new elevatorLIDAR(Robot.elevator.HATCH_PICKUP_RAISE_LIDAR)); 
 
 		 
 //		c8.whenPressed(new streamCameras());
+		//c6.whileHeld(new armPower(Robot.arm.BALL_HIGH_POWER)); 
+
+		//c8.whileHeld(new armPower(Robot.arm.NO_HATCH_LOW_POWER)); 
+
 		c4.whileHeld(new flySuck()); 
 		c3.whileHeld(new flyShoot());
 		c5.whileHeld(new armRaise());

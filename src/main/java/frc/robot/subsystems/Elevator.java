@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.moveElevatorJoystick;
 import frc.robot.commands.setElevator;
+import frc.robot.LIDAR;
 
 /**
  * Add your docs here.
@@ -28,6 +29,7 @@ public class Elevator extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
+  public LIDAR lidar;
   WPI_TalonSRX elevator; 
   public double position; 
   double arbfeedfwd; 
@@ -37,6 +39,9 @@ public class Elevator extends Subsystem {
   public DigitalInput stage2_up;
 
   public double MAX_ENCODER_POSITION = 48119; 
+  public double HATCH_PICKUP_LOW_LIDAR = 27; 
+  public double HATCH_PICKUP_RAISE_LIDAR = 37; 
+
 
   public Elevator(double position){
     this.position = position; 
@@ -58,16 +63,20 @@ public class Elevator extends Subsystem {
 
     // POSITION: 0 
     this.setPID(RobotMap.ELEVATOR_POSITION_SLOT, RobotMap.elevator_position_kF, 
-      RobotMap.elevator_position_kP, RobotMap.elevator_position_kI, 
-      RobotMap.elevator_velocity_kD); 
+                RobotMap.elevator_position_kP, RobotMap.elevator_position_kI, 
+                RobotMap.elevator_velocity_kD); 
+
     // VELOCITY: 1
     this.setPID(RobotMap.ELEVATOR_VELOCITY_SLOT, RobotMap.elevator_velocity_kF,
-      RobotMap.elevator_velocity_kP, RobotMap.elevator_velocity_kI,
-      RobotMap.elevator_velocity_kD);
+                RobotMap.elevator_velocity_kP, RobotMap.elevator_velocity_kI,
+                RobotMap.elevator_velocity_kD);
 
-      carriage_up = new DigitalInput(RobotMap.CARRIAGE_UP_SWITCH); 
-      stage2_up = new DigitalInput(RobotMap.STAGE2_UP_SWITCH);
-      elevator_down = new DigitalInput(RobotMap.ELEVATOR_DOWN_SWITCH); 
+    carriage_up = new DigitalInput(RobotMap.CARRIAGE_UP_SWITCH); 
+    stage2_up = new DigitalInput(RobotMap.STAGE2_UP_SWITCH);
+    elevator_down = new DigitalInput(RobotMap.ELEVATOR_DOWN_SWITCH); 
+
+    lidar = new LIDAR();
+    lidar.startMeasuring();
     
   }
 
@@ -108,13 +117,16 @@ public class Elevator extends Subsystem {
   }
 
   public void raiseElevator(){
-    elevator.set(ControlMode.PercentOutput, 0.2); 
+    //if(!(carriage_up.get() && stage2_up.get())){
+      elevator.set(ControlMode.PercentOutput, 0.5); 
+    //}
 
   }
 
   public void lowerElevator(){
-    elevator.set(ControlMode.PercentOutput, -0.4); 
-
+    //if(!elevator_down.get()){
+      elevator.set(ControlMode.PercentOutput, -0.5); 
+    //}
 
   }
 
@@ -143,8 +155,6 @@ public class Elevator extends Subsystem {
 
   public void resetElevator(){
     elevator.getSensorCollection().setQuadraturePosition(0, 30);
-    
-
   }
 
   public void setSlot(int slot){
@@ -153,6 +163,7 @@ public class Elevator extends Subsystem {
   public void updateSmartDashboard(){
     SmartDashboard.putNumber("Elevator Position:", getPosition()); 
     SmartDashboard.putNumber("Elevator Speed: ", getSpeed());
+    SmartDashboard.putNumber("Lidar Distance: ", lidar.getDistance());
 
     SmartDashboard.putBoolean("Carriage up:", carriage_up.get()); 
     SmartDashboard.putBoolean("Second Stage up:", stage2_up.get());

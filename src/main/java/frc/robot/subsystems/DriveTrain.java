@@ -43,6 +43,8 @@ public class DriveTrain extends Subsystem {
 	private WPI_TalonSRX backLeftSrx; 
 	private WPI_TalonSRX backRightSrx;
 
+	public double MAXIMUM_VELOCITY = 0.0; // take 90-80% of this 
+
 
 	
 	// left talon id: 1

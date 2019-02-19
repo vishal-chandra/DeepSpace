@@ -9,78 +9,57 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import edu.wpi.first.wpilibj.GenericHID;
 
-
-public class curvaturePIDControl extends Command {
-  double forward = 0; 
-  double turn = 0; 
-  double left_command = 0; 
-  double right_command = 0; 
-  double SKIM_GAIN = 0.5; 
-
-  double lastValue; 
-  long lastTime; 
-  double maxChangePerMillis = 0.0; // TODO 
-  public curvaturePIDControl() {
+public class elevatorLIDAR extends Command {
+  double position; 
+  double current_position; 
+  boolean finished;
+  double tolerance = 5; 
+  public elevatorLIDAR(double position) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.driveTrain); 
+    requires(Robot.elevator); 
+    this.position = position; 
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    forward = -Robot.oi.xbox.getY(GenericHID.Hand.kLeft);
-    turn = Robot.oi.xbox.getX(GenericHID.Hand.kRight);
-
-    left_command = forward + turn; 
-    right_command = forward - turn; 
-
-    double adjusted_left = left_command + skim(right_command); 
-    double adjusted_right = right_command + skim(left_command); 
-
-
-
-    
-
-  }
-  // sets a ramp rate on the input 
-  double ramp(double value){
-    return 0.0; // TODO
-  }
-
-  double skim(double v){
-    if(v > 1.0){
-      return -((v - 1.0) * this.SKIM_GAIN); 
-    }
-    else if(v < -1.0){
-      return -((v + 1.0) * this.SKIM_GAIN);
-    }
-    return 0;
+    finished = false;
+    current_position = Robot.elevator.lidar.getDistance(); 
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    
-
+    if(current_position < position && !(Robot.elevator.carriage_up.get() && Robot.elevator.stage2_up.get())){
+      Robot.elevator.raiseElevator();
+    }
+    else if(current_position > position && !Robot.elevator.elevator_down.get()){
+      Robot.elevator.lowerElevator();
+    }
+    else if(Math.abs(position - current_position) < tolerance) {
+      finished = true; 
+      Robot.elevator.stopElevator();
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return finished;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.elevator.stopElevator();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.elevator.stopElevator();
   }
 }

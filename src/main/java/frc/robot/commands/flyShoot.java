@@ -14,6 +14,7 @@ public class flyShoot extends Command {
   public flyShoot() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    requires(Robot.arm); 
   }
 
   // Called just before this Command runs the first time

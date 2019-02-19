@@ -30,14 +30,15 @@ public class moveElevatorJoystick extends Command {
   protected void execute() {
     double power = -Robot.oi.xbox.getY(GenericHID.Hand.kRight); 
     SmartDashboard.putNumber("Power applied to elevator", power);
-    if(power < 0){
-      if(Robot.arm.arm.getSensorCollection().isFwdLimitSwitchClosed() || Robot.arm.arm.getSensorCollection().isFwdLimitSwitchClosed()){
-          Robot.elevator.setPower(power); 
-      }
-      else Robot.elevator.setPower(power); 
+    // if(power < 0){
+    //   if(Robot.arm.arm.getSensorCollection().isFwdLimitSwitchClosed() || Robot.arm.arm.getSensorCollection().isFwdLimitSwitchClosed()){
+    //       Robot.elevator.setPower(power); 
+    //   }
+    //   else Robot.elevator.setPower(power); 
 
-    }
-    else Robot.elevator.setPower(power); //arb ff
+    // }
+    // else 
+    Robot.elevator.setPower(power); //arb ff
     // if(power > 0 && !(Robot.elevator.carriage_up.get() && Robot.elevator.stage2_up.get())) Robot.elevator.setPower(power); 
     // else if(power < 0 && !(Robot.elevator.elevator_down.get())) Robot.elevator.setPower(power); 
 

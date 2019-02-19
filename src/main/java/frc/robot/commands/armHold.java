@@ -8,63 +8,34 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
-import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot; 
 
+public class armHold extends Command {
 
-public class curvaturePIDControl extends Command {
-  double forward = 0; 
-  double turn = 0; 
-  double left_command = 0; 
-  double right_command = 0; 
-  double SKIM_GAIN = 0.5; 
+  double armAngle;
 
-  double lastValue; 
-  long lastTime; 
-  double maxChangePerMillis = 0.0; // TODO 
-  public curvaturePIDControl() {
+  public armHold() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.driveTrain); 
+    requires(Robot.arm);
   }
-
+  
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    forward = -Robot.oi.xbox.getY(GenericHID.Hand.kLeft);
-    turn = Robot.oi.xbox.getX(GenericHID.Hand.kRight);
-
-    left_command = forward + turn; 
-    right_command = forward - turn; 
-
-    double adjusted_left = left_command + skim(right_command); 
-    double adjusted_right = right_command + skim(left_command); 
-
-
-
-    
-
-  }
-  // sets a ramp rate on the input 
-  double ramp(double value){
-    return 0.0; // TODO
-  }
-
-  double skim(double v){
-    if(v > 1.0){
-      return -((v - 1.0) * this.SKIM_GAIN); 
-    }
-    else if(v < -1.0){
-      return -((v + 1.0) * this.SKIM_GAIN);
-    }
-    return 0;
+    armAngle = Robot.arm.getAngle();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    
+    armAngle = Robot.arm.getAngle();
+    if(Robot.arm.hold){
+      //SmartDashboard.putNumber("Arm Power:", 0.2 * Math.cos(armAngle)); 
 
+      Robot.arm.setPower(0.1 * Math.cos(armAngle));
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
