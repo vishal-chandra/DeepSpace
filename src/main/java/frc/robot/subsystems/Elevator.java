@@ -18,8 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.moveElevatorJoystick;
-import frc.robot.commands.setElevator;
+import frc.robot.commands.elevator.*;
 import frc.robot.LIDAR;
 
 /**

@@ -16,10 +16,8 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import frc.robot.commands.setArm;
-import frc.robot.commands.moveElevatorJoystick;
-import frc.robot.commands.armHold;
-import frc.robot.commands.toggleArmHold;
+import frc.robot.commands.arm.*;
+import frc.robot.commands.elevator.*;
 
 /**
  *
@@ -58,6 +56,8 @@ public class Arm extends Subsystem {
 
     int CRUISE_VELOCITY  = 251; // TODO 
     int ACCELERATION = 1004; // TODO
+
+    double horizontal_hold_output = 0.0; 
 
     public static  double arm_position_kF = 0.0; 
 	public static  double arm_position_kP = 0.001; 
@@ -123,6 +123,7 @@ public class Arm extends Subsystem {
     
     public void move_MM(double targetPos){
         arm.configAllowableClosedloopError(0, 10, kTimeoutMs); 
+        //arm.set(ControlMode.Position, setpoint, Demandtype.ArbitraryFeedForward, arbfeefwd)
         arm.set(ControlMode.MotionMagic, targetPos); 
     }
 
@@ -131,10 +132,15 @@ public class Arm extends Subsystem {
         double currentPos = arm.getSelectedSensorPosition(); 
         return Math.abs(targetPos - currentPos) < tolerance; 
     }
-    
+    public double getFeedForward(){
+        double radians = Math.toRadians(getAngle()); 
+        double feedForward = horizontal_hold_output * Math.cos(radians); 
+
+        return feedForward;
+    }
     public void setPosition(double setpoint){
         //arm.selectProfileSlot(RobotMap.ARM_POSITION_SLOT, 0);
-        arm.set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, Math.cos(this.getArmEncoder() / 4096.0 * 360) * 0.165); 
+        arm.set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, getFeedForward()); 
 
         //arm.set(ControlMode.Position, this.position);
     }

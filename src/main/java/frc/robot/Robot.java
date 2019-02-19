@@ -1,6 +1,7 @@
 
 package frc.robot;
 
+//wpilib
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -9,16 +10,18 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import frc.robot.commands.resetArm;
-//import frc.robot.commands.fillTanks;
-import frc.robot.commands.resetGyro;
-//import frc.robot.subsystems.Claw;
-import frc.robot.subsystems.Arm;
 
-//import frc.robot.commands.ExampleCommand;
+//commands
+import frc.robot.commands.arm.*;
+import frc.robot.commands.drive.*;
+import frc.robot.commands.elevator.*;
+import frc.robot.commands.vision.*;
+import frc.robot.commands.resetGyro;
+
+//subsystems
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
-//import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Vision;
 
 /**

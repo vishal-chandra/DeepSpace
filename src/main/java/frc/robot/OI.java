@@ -1,24 +1,9 @@
 package frc.robot;
 
-import frc.robot.commands.armLower;
-import frc.robot.commands.armPower;
-import frc.robot.commands.armRaise;
-import frc.robot.commands.autoAlign;
-import frc.robot.commands.driveBaseSwitchDirections;
-
-
-import frc.robot.commands.driveStraight;
-import frc.robot.commands.elevatorLIDAR;
-import frc.robot.commands.flyShoot;
-import frc.robot.commands.flySuck;
-import frc.robot.commands.followTape;
-import frc.robot.commands.followTarget;
-import frc.robot.commands.rotateClockwise;
-import frc.robot.commands.rotateCounterClockwise;
-import frc.robot.commands.streamCameras;
-import frc.robot.commands.toggleClaw;
-import frc.robot.commands.turnRight90;
-import frc.robot.commands.changePipeline;
+import frc.robot.commands.arm.*;
+import frc.robot.commands.drive.*;
+import frc.robot.commands.elevator.*;
+import frc.robot.commands.vision.*;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;

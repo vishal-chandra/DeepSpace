@@ -20,9 +20,9 @@ public class LIDAR{
 	}
 
 	public void startMeasuring() {
-		writeRegister(0x04, 0x08); // add offset here
-		writeRegister(0x11, 0xff);
-		writeRegister(0x00, 0x04);
+		//writeRegister(0x04, 0x08 | 32); //bitwise OR operator flips 5th bit on to enable custom delay
+		writeRegister(0x11, 0xff); //free-running mode
+		writeRegister(0x00, 0x04); //enable reciever bias correction
 	}
 
 	public void stopMeasuring() {//don't need...?
@@ -30,7 +30,7 @@ public class LIDAR{
 	}
 
 	public int getDistance() {
-		return readShort(0x8f);
+		return readShort(0x8f) - 5; //read and then offset by 5 so lowest position is 0
     }
     
     /*
