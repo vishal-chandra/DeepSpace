@@ -38,9 +38,9 @@ public class moveElevatorJoystick extends Command {
 
     // }
     // else 
-    Robot.elevator.setPower(power); //arb ff
-    // if(power > 0 && !(Robot.elevator.carriage_up.get() && Robot.elevator.stage2_up.get())) Robot.elevator.setPower(power); 
-    // else if(power < 0 && !(Robot.elevator.elevator_down.get())) Robot.elevator.setPower(power); 
+    //Robot.elevator.setPower(power); //arb ff
+    if(power > 0 && !(Robot.elevator.carriage_up.get() && Robot.elevator.stage2_up.get())) Robot.elevator.setPower(power); 
+    else if(power < 0 && !(Robot.elevator.elevator_down.get())) Robot.elevator.setPower(power); 
 
   }
 

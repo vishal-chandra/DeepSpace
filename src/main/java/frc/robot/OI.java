@@ -123,7 +123,7 @@ public class OI {
 		//c3.whenPressed(new turnRight90()); 
 		//c4.whenPressed(new autoAlign()); 
 		//c7.whileHeld(new driveStraight(-0.8, -0.8));
-		//c8.whileHeld(new driveStraight(0.8, 0.8));
+		x1.whileHeld(new driveStraight(0.6, 0.6));
 		//c6.whenPressed(new followTarget());
 		//c9.whenPressed(new changePipeline(0));
 		//c10.whenPressed(new changePipeline(1));
@@ -131,13 +131,13 @@ public class OI {
 		c1.whileHeld(new armPower(Robot.arm.HATCH_HIGH_POWER)); 
 		c2.whileHeld(new armPower(Robot.arm.HATCH_LOW_POWER)); 
 
-		c6.whileHeld(new armPower(Robot.arm.BALL_HIGH_POWER)); 
+		//c6.whileHeld(new armPower(Robot.arm.BALL_HIGH_POWER)); 
 
 		c8.whileHeld(new armPower(Robot.arm.NO_HATCH_LOW_POWER)); 
 
 		c9.whenPressed(new elevatorLIDAR(Robot.elevator.HATCH_PICKUP_LOW_LIDAR));
 		c10.whenPressed(new elevatorLIDAR(Robot.elevator.HATCH_PICKUP_RAISE_LIDAR)); 
-
+		
 		 
 //		c8.whenPressed(new streamCameras());
 		//c6.whileHeld(new armPower(Robot.arm.BALL_HIGH_POWER)); 

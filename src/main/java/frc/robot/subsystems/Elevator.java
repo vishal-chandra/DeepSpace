@@ -87,6 +87,7 @@ public class Elevator extends Subsystem {
     
     // moveElevatorJoystick is for finding arbitrary feed forwardd to use with position control
     setDefaultCommand(new moveElevatorJoystick()); //arb ff
+    //setDefaultCommand(new elevatorLIDAR());
   }
 
 
@@ -170,6 +171,7 @@ public class Elevator extends Subsystem {
     //displayPID();
     
   }
+
   // call if tuning PID in initialize
   public void displayPID(){
     SmartDashboard.putNumber("Elevator Position kP", RobotMap.elevator_position_kP);
@@ -178,6 +180,7 @@ public class Elevator extends Subsystem {
     SmartDashboard.putNumber("Elevator position setPoint:",  this.position); 
 
   }
+
   // call if tuning PID in execute
   public void tune(){
     double sdkP = SmartDashboard.getNumber("Elevator Position kP", RobotMap.elevator_position_kP); 
@@ -191,6 +194,7 @@ public class Elevator extends Subsystem {
       // change slot when doing velocity tuning
       elevator.config_kP(RobotMap.ELEVATOR_POSITION_SLOT, sdkP);
     }
+
     if(sdkI != RobotMap.elevator_position_kI) {
       RobotMap.elevator_position_kI = sdkI;
       // change slot when doing velocity tuning
@@ -198,13 +202,12 @@ public class Elevator extends Subsystem {
       elevator.config_kI(RobotMap.ELEVATOR_POSITION_SLOT, sdkI);
 
     }
+
     if(sdkD != RobotMap.elevator_position_kD) {
       RobotMap.elevator_position_kD = sdkD;
       // change slot when doing velocity tuning
 
       elevator.config_kD(RobotMap.ELEVATOR_POSITION_SLOT, sdkD);
-
-
     }
     
     if(setpoint != this.position) this.position = setpoint; 

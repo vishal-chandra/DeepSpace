@@ -152,11 +152,11 @@ public class Arm extends Subsystem {
     }
 
     public void raiseArm(){
-        arm.set(ControlMode.PercentOutput, 0.1);	
+        arm.set(ControlMode.PercentOutput, 0.4);	
     }
     
     public void lowerArm(){
-    	arm.set(ControlMode.PercentOutput, -0.2);
+    	arm.set(ControlMode.PercentOutput, -0.4);
 //    	arm.set(-0.1);
     }
     
