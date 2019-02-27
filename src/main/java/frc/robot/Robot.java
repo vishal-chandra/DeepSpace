@@ -50,17 +50,17 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		driveTrain = new DriveTrain(); 
-		vision = new Vision(); 
-		elevator = new Elevator(0); 
-		arm = new Arm(-800); 
+		//driveTrain = new DriveTrain(); 
+		//vision = new Vision(); 
+		//elevator = new Elevator(0); 
+		arm = new Arm(0); 
 
 		oi = new OI();
 //		chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 		SmartDashboard.putData("Reset Arm", new resetArm()); 
-        SmartDashboard.putData("Reset Gyro", new resetGyro());
+        //SmartDashboard.putData("Reset Gyro", new resetGyro());
         //SmartDashboard.putData("Fill:", new fillTanks());
 
 	}
@@ -145,9 +145,9 @@ public class Robot extends TimedRobot {
 	}
 	
 	public void updateSmartDashboard(){
-		driveTrain.updateSmartDashboard();
-		elevator.updateSmartDashboard(); 
-		vision.updateSmartDashboard();
+		//driveTrain.updateSmartDashboard();
+		//elevator.updateSmartDashboard(); 
+		//vision.updateSmartDashboard();
 
 		arm.updateSmartDashboard();
 		SmartDashboard.putBoolean("Open:", RobotMap.open); 

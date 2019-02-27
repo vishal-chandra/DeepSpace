@@ -48,21 +48,21 @@ public class Arm extends Subsystem {
 
     public double BALL_HIGH_POWER = 0.1; 
 
-    public double mm_kP = 0.0; 
-    public double mm_kI = 0.0; 
-    public double mm_kD = 0.0; 
+    public double mm_kP = 0.41; 
+    public double mm_kI = 0.001; 
+    public double mm_kD = 0.8; 
     public double mm_kF = 0.0; 
     public int kTimeoutMs = 5; 
 
-    int CRUISE_VELOCITY  = 251; // TODO 
-    int ACCELERATION = 1004; // TODO
+    int CRUISE_VELOCITY  = 500; // TODO 
+    int ACCELERATION = 2004; // TODO
 
     double horizontal_hold_output = 0.0; 
 
     public static  double arm_position_kF = 0.0; 
-	public static  double arm_position_kP = 0.001; 
+	public static  double arm_position_kP = 0.02; 
 	public static  double arm_position_kI = 0.0; 
-	public static  double arm_position_kD = 0.0;
+	public static  double arm_position_kD = 0.01;
 
 	public Arm(double position){
         hold = false;
@@ -85,7 +85,7 @@ public class Arm extends Subsystem {
         //armUp = new DigitalInput(RobotMap.ARM_UP_SWITCH); 
         //armDown = new DigitalInput(RobotMap.ARM_DOWN_SWITCH); 
         
-        arm.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
+        arm.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
         arm.configNominalOutputForward(0, 10);
         arm.configNominalOutputReverse(0, 10);
         arm.configPeakOutputForward(1.0, 10); 
@@ -111,14 +111,14 @@ public class Arm extends Subsystem {
 
 		
 		
-		arm.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
+		arm.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 	}
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-        //setDefaultCommand(new setArm()); 
+        setDefaultCommand(new setArm()); 
         //setDefaultCommand(new moveElevatorJoystick());
-        setDefaultCommand(new armHold());
+        //setDefaultCommand(new armHold());
     }
     
     public void move_MM(double targetPos){
@@ -138,9 +138,10 @@ public class Arm extends Subsystem {
 
         return feedForward;
     }
+
     public void setPosition(double setpoint){
         //arm.selectProfileSlot(RobotMap.ARM_POSITION_SLOT, 0);
-        arm.set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, getFeedForward()); 
+        arm.set(ControlMode.MotionMagic, setpoint); 
 
         //arm.set(ControlMode.Position, this.position);
     }
@@ -230,6 +231,7 @@ public class Arm extends Subsystem {
 
         SmartDashboard.putBoolean("Hold arm:", this.hold);
         SmartDashboard.putData("arm holding position:", new toggleArmHold());
+        SmartDashboard.putNumber("arm setpoint:", this.position); 
     }
 
     public void displayPID(){
