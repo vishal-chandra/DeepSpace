@@ -34,7 +34,7 @@ public class armHold extends Command {
     if(Robot.arm.hold){
       //SmartDashboard.putNumber("Arm Power:", 0.2 * Math.cos(armAngle)); 
 
-      Robot.arm.setPower(0.1 * Math.cos(armAngle));
+      Robot.arm.setPower(0.1 * Math.cos(Math.toRadians(armAngle)));
     }
   }
 

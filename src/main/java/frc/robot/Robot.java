@@ -60,6 +60,7 @@ public class Robot extends TimedRobot {
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 		SmartDashboard.putData("Reset Arm", new resetArm()); 
+		SmartDashboard.putData("Set Arm:", new setArm()); 
         //SmartDashboard.putData("Reset Gyro", new resetGyro());
         //SmartDashboard.putData("Fill:", new fillTanks());
 

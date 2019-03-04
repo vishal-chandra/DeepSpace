@@ -48,16 +48,16 @@ public class Arm extends Subsystem {
 
     public double BALL_HIGH_POWER = 0.1; 
 
-    public double mm_kP = 0.41; 
-    public double mm_kI = 0.001; 
-    public double mm_kD = 0.8; 
-    public double mm_kF = 0.0; 
+    public double mm_kP = 0.15; 
+    public double mm_kI = 0.000; 
+    public double mm_kD = 0.000; 
+    public double mm_kF = 3.279; 
     public int kTimeoutMs = 5; 
 
-    int CRUISE_VELOCITY  = 500; // TODO 
-    int ACCELERATION = 2004; // TODO
+    int CRUISE_VELOCITY  = 312; // TODO 
+    int ACCELERATION = 312; // TODO
 
-    double horizontal_hold_output = 0.0; 
+    double horizontal_hold_output = 0.1; 
 
     public static  double arm_position_kF = 0.0; 
 	public static  double arm_position_kP = 0.02; 
@@ -67,10 +67,10 @@ public class Arm extends Subsystem {
 	public Arm(double position){
         hold = false;
         preferences = Preferences.getInstance();
-        preferences.putDouble("Arm Position kP", 0.001); 
-        preferences.putDouble("Arm Position kI", 0.0); 
+        preferences.putDouble("Arm mm kP", 0.0); 
+        preferences.putDouble("Arm mm kI", 0.0); 
 
-        preferences.putDouble("Arm Position kD", 0.0); 
+        preferences.putDouble("Arm mm kD", 0.0); 
         preferences.putDouble("Arm position setPoint:", position); 
 
 
@@ -93,7 +93,7 @@ public class Arm extends Subsystem {
         arm.getSensorCollection().setQuadraturePosition(0, 10);  
 
 
-        arm.setSensorPhase(true); 
+        arm.setSensorPhase(false); 
         arm.setInverted(true); 
 
 
@@ -141,7 +141,8 @@ public class Arm extends Subsystem {
 
     public void setPosition(double setpoint){
         //arm.selectProfileSlot(RobotMap.ARM_POSITION_SLOT, 0);
-        arm.set(ControlMode.MotionMagic, setpoint); 
+        double feedForward = getFeedForward(); 
+        arm.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, feedForward); 
 
         //arm.set(ControlMode.Position, this.position);
     }
@@ -153,11 +154,11 @@ public class Arm extends Subsystem {
     }
 
     public void raiseArm(){
-        arm.set(ControlMode.PercentOutput, 0.4);	
+        arm.set(ControlMode.PercentOutput, 0.20);	
     }
     
     public void lowerArm(){
-    	arm.set(ControlMode.PercentOutput, -0.4);
+    	arm.set(ControlMode.PercentOutput, -0.20);
 //    	arm.set(-0.1);
     }
     
@@ -165,20 +166,21 @@ public class Arm extends Subsystem {
     	arm.set(ControlMode.PercentOutput, 0.0);
 //    	arm.set(0.0);
     }
+
     public void setPID(int slot,double kF, double kP, double kI, double kD){
         arm.config_kF(slot, kF, 30); 
         arm.config_kP(slot, kP, 30); 
         arm.config_kI(slot, kI, 30); 
         arm.config_kD(slot, kD, 30); 
-      }
+    }
    
     
     public double getArmEncoder(){
-    	return arm.getSensorCollection().getQuadraturePosition();
+        return arm.getSelectedSensorPosition();
     }
 
     public double getVelocity(){
-        return arm.getSensorCollection().getQuadratureVelocity();
+        return arm.getSelectedSensorVelocity();
     }
     
     public void resetArm(){
@@ -213,7 +215,7 @@ public class Arm extends Subsystem {
 
     public double getAngle() { // returns angle from ground 
 
-        return 90 - Math.abs(getArmEncoder() * (360.0/4096.0)); //360 degrees per 4096 encoder ticks
+        return Math.abs(getArmEncoder() * (360.0/4096.0)); //360 degrees per 4096 encoder ticks
     }
 
 
@@ -235,10 +237,10 @@ public class Arm extends Subsystem {
     }
 
     public void displayPID(){
-        SmartDashboard.putNumber("Arm Position kP", arm_position_kP);
-        SmartDashboard.putNumber("Arm Position kI", arm_position_kI); 
-        SmartDashboard.putNumber("Arm Position kD", arm_position_kD); 
-        SmartDashboard.putNumber("Arm position setPoint:",  this.position);
+        // SmartDashboard.putNumber("Arm Position kP", arm_position_kP);
+        // SmartDashboard.putNumber("Arm Position kI", arm_position_kI); 
+        // SmartDashboard.putNumber("Arm Position kD", arm_position_kD); 
+        // SmartDashboard.putNumber("Arm position setPoint:",  this.position);
     
     }
       // call if tuning PID in execute
@@ -248,29 +250,29 @@ public class Arm extends Subsystem {
         // double sdkD = SmartDashboard.getNumber("Arm Position kD", RobotMap.arm_position_kD); 
     
         // double setpoint = SmartDashboard.getNumber("Arm position setPoint:", this.position); 
-        double sdkP = preferences.getDouble("Arm Position kP", arm_position_kP); 
-        double sdkI = preferences.getDouble("Arm Position kI", arm_position_kI); 
-        double sdkD = preferences.getDouble("Arm Position kD", arm_position_kD); 
+        double sdkP = preferences.getDouble("Arm mm kP", mm_kP); 
+        double sdkI = preferences.getDouble("Arm mm kI", mm_kI); 
+        double sdkD = preferences.getDouble("Arm mm kD", mm_kD); 
     
         double setpoint = preferences.getDouble("Arm position setPoint:", this.position); 
     
-        if(sdkP != RobotMap.arm_position_kP) {
-          arm_position_kP = sdkP; 
+        if(sdkP != this.mm_kP) {
+          mm_kP = sdkP; 
           // change slot when doing velocity tuning
-          arm.config_kP(RobotMap.ARM_POSITION_SLOT, sdkP);
+          arm.config_kP(1, sdkP);
         }
-        if(sdkI != RobotMap.arm_position_kI) {
-          arm_position_kI = sdkI;
+        if(sdkI != this.mm_kI) {
+          mm_kI = sdkI;
           // change slot when doing velocity tuning
      
-          arm.config_kI(RobotMap.ARM_POSITION_SLOT, sdkI);
+          arm.config_kI(1, sdkI);
     
         }
-        if(sdkD != RobotMap.arm_position_kD) {
-          arm_position_kD = sdkD;
+        if(sdkD != this.mm_kD) {
+          mm_kD = sdkD;
           // change slot when doing velocity tuning
     
-          arm.config_kD(RobotMap.ARM_POSITION_SLOT, sdkD);
+          arm.config_kD(1, sdkD);
     
     
         }
