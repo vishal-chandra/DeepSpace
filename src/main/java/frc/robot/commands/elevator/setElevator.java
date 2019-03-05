@@ -23,18 +23,17 @@ public class setElevator extends Command {
   @Override
   protected void initialize() {
     //Robot.elevator.setPID(RobotMap.elevator_position_kF, RobotMap.elevator_position_kP, RobotMap.elevator_position_kI, RobotMap.elevator_position_kD);
-    // Position: 0 
+    // Motion Magic: 0 
     // only for tuning purposes
-    Robot.elevator.displayPID();
-    Robot.elevator.setSlot(RobotMap.ELEVATOR_POSITION_SLOT); 
+    Robot.elevator.setSlot(0); 
 
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.elevator.tune();
-    Robot.elevator.setPosition(Robot.elevator.position); 
+    this.position = Robot.elevator.position; 
+    Robot.elevator.setPosition(this.position); 
   }
 
   // Make this return true when this Command no longer needs to run execute()

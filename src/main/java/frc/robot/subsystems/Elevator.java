@@ -41,6 +41,15 @@ public class Elevator extends Subsystem {
   public double HATCH_PICKUP_LOW_LIDAR = 27; 
   public double HATCH_PICKUP_RAISE_LIDAR = 37; 
 
+  public double mm_kP = 0.00; 
+  public double mm_kI = 0.000; 
+  public double mm_kD = 0.000; 
+  public double mm_kF = 0.0; 
+
+  public int CRUISE_VELOCITY = 0; 
+  public int ACCELERATION = 0; 
+  public int kTimeoutMs = 5; 
+
 
   public Elevator(double position){
     this.position = position; 
@@ -60,15 +69,12 @@ public class Elevator extends Subsystem {
     elevator.configPeakOutputForward(1.0, 30); 
     elevator.configPeakOutputReverse(-1.0, 30);
 
-    // POSITION: 0 
-    this.setPID(RobotMap.ELEVATOR_POSITION_SLOT, RobotMap.elevator_position_kF, 
-                RobotMap.elevator_position_kP, RobotMap.elevator_position_kI, 
-                RobotMap.elevator_velocity_kD); 
+    elevator.configMotionCruiseVelocity(CRUISE_VELOCITY, kTimeoutMs); 
+    elevator.configMotionAcceleration(ACCELERATION, kTimeoutMs); 
 
-    // VELOCITY: 1
-    this.setPID(RobotMap.ELEVATOR_VELOCITY_SLOT, RobotMap.elevator_velocity_kF,
-                RobotMap.elevator_velocity_kP, RobotMap.elevator_velocity_kI,
-                RobotMap.elevator_velocity_kD);
+    // MOTION MAGIC: 0 
+    this.setPID(0, mm_kF, mm_kP, mm_kI, mm_kD); 
+
 
     carriage_up = new DigitalInput(RobotMap.CARRIAGE_UP_SWITCH); 
     stage2_up = new DigitalInput(RobotMap.STAGE2_UP_SWITCH);
@@ -102,8 +108,16 @@ public class Elevator extends Subsystem {
 
   */
 
+  public double getFeedForward(){
+    double feedForward = 0.0; 
+    
+    
+    return feedForward; 
+  
+  }
   public void setPosition(double setpoint){
-     elevator.set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, RobotMap.ELEVATOR_ARBFEEDFWD); 
+     double feedForward = getFeedForward(); 
+     elevator.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, feedForward); 
 
       //elevator.set(ControlMode.Position, setpoint); 
   }
@@ -139,11 +153,11 @@ public class Elevator extends Subsystem {
   }
 
   public double getPosition(){
-    return elevator.getSensorCollection().getQuadraturePosition();
+    return elevator.getSelectedSensorPosition();
   }
 
   public double getSpeed(){
-    return elevator.getSensorCollection().getQuadratureVelocity();  
+    return elevator.getSelectedSensorVelocity();  
   }
 
   public void setPID(int slot, double kF, double kP, double kI, double kD){
@@ -170,47 +184,5 @@ public class Elevator extends Subsystem {
     SmartDashboard.putBoolean("Elevator down:", elevator_down.get()); 
     //displayPID();
     
-  }
-
-  // call if tuning PID in initialize
-  public void displayPID(){
-    SmartDashboard.putNumber("Elevator Position kP", RobotMap.elevator_position_kP);
-    SmartDashboard.putNumber("Elevator Position kI", RobotMap.elevator_position_kI); 
-    SmartDashboard.putNumber("Elevator Position kD", RobotMap.elevator_position_kD); 
-    SmartDashboard.putNumber("Elevator position setPoint:",  this.position); 
-
-  }
-
-  // call if tuning PID in execute
-  public void tune(){
-    double sdkP = SmartDashboard.getNumber("Elevator Position kP", RobotMap.elevator_position_kP); 
-    double sdkI = SmartDashboard.getNumber("Elevator Position kI", RobotMap.elevator_position_kI); 
-    double sdkD = SmartDashboard.getNumber("Elevator Position kD", RobotMap.elevator_position_kD); 
-
-    double setpoint = SmartDashboard.getNumber("Elevator position setPoint:", this.position); 
-
-    if(sdkP != RobotMap.elevator_position_kP) {
-      RobotMap.elevator_position_kP = sdkP; 
-      // change slot when doing velocity tuning
-      elevator.config_kP(RobotMap.ELEVATOR_POSITION_SLOT, sdkP);
-    }
-
-    if(sdkI != RobotMap.elevator_position_kI) {
-      RobotMap.elevator_position_kI = sdkI;
-      // change slot when doing velocity tuning
- 
-      elevator.config_kI(RobotMap.ELEVATOR_POSITION_SLOT, sdkI);
-
-    }
-
-    if(sdkD != RobotMap.elevator_position_kD) {
-      RobotMap.elevator_position_kD = sdkD;
-      // change slot when doing velocity tuning
-
-      elevator.config_kD(RobotMap.ELEVATOR_POSITION_SLOT, sdkD);
-    }
-    
-    if(setpoint != this.position) this.position = setpoint; 
-
-  }
+  }  
 }

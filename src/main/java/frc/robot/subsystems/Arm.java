@@ -34,7 +34,7 @@ public class Arm extends Subsystem {
  
 	public DigitalInput armUp; 
     public DigitalInput armDown; 
-    double MAX_ARM_POSITION = -1700; 
+    double MAX_ARM_POSITION = 1700; 
     public double position;
     public DigitalInput ball_intake;
     public DigitalInput hatch_pickup;
@@ -73,9 +73,6 @@ public class Arm extends Subsystem {
         preferences.putDouble("Arm mm kD", 0.0); 
         preferences.putDouble("Arm position setPoint:", position); 
 
-
-
-//		arm = new WPI_TalonSRX(RobotMap.ARM_MOTOR); 
         this.position = position; 
         fly = new Talon(RobotMap.FLY);
         arm = new WPI_TalonSRX(RobotMap.ARM_ACTUATOR) ;
@@ -105,19 +102,13 @@ public class Arm extends Subsystem {
         arm.configMotionCruiseVelocity(CRUISE_VELOCITY, kTimeoutMs); 
         arm.configMotionAcceleration(ACCELERATION, kTimeoutMs); 
         this.setPID(1, mm_kF, mm_kP, mm_kI, mm_kD); 
-    // this.setPID(RobotMap.ARM_VELOCITY_SLOT, RobotMap.arm_velocity_kF,
-    //   RobotMap.arm_velocity_kP, RobotMap.arm_velocity_kI,
-    //   RobotMap.arm_velocity_kD);
-
-		
-		
+    
 		arm.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 	}
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
         setDefaultCommand(new setArm()); 
-        //setDefaultCommand(new moveElevatorJoystick());
         //setDefaultCommand(new armHold());
     }
     
@@ -140,7 +131,6 @@ public class Arm extends Subsystem {
     }
 
     public void setPosition(double setpoint){
-        //arm.selectProfileSlot(RobotMap.ARM_POSITION_SLOT, 0);
         double feedForward = getFeedForward(); 
         arm.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, feedForward); 
 
@@ -149,7 +139,6 @@ public class Arm extends Subsystem {
     
 
     public void setSpeed(double speed){
-        //arm.selectProfileSlot(RobotMap.ARM_VELOCITY_SLOT, 0);
         arm.set(ControlMode.Velocity, speed); 
     }
 
@@ -159,12 +148,10 @@ public class Arm extends Subsystem {
     
     public void lowerArm(){
     	arm.set(ControlMode.PercentOutput, -0.20);
-//    	arm.set(-0.1);
     }
     
     public void armStop(){
     	arm.set(ControlMode.PercentOutput, 0.0);
-//    	arm.set(0.0);
     }
 
     public void setPID(int slot,double kF, double kP, double kI, double kD){
@@ -218,6 +205,11 @@ public class Arm extends Subsystem {
         return Math.abs(getArmEncoder() * (360.0/4096.0)); //360 degrees per 4096 encoder ticks
     }
 
+    //arb ff
+    public void setPower(double power){
+        arm.set(ControlMode.PercentOutput, power); 
+    }
+
 
 
     public void updateSmartDashboard(){
@@ -236,20 +228,11 @@ public class Arm extends Subsystem {
         SmartDashboard.putNumber("arm setpoint:", this.position); 
     }
 
-    public void displayPID(){
-        // SmartDashboard.putNumber("Arm Position kP", arm_position_kP);
-        // SmartDashboard.putNumber("Arm Position kI", arm_position_kI); 
-        // SmartDashboard.putNumber("Arm Position kD", arm_position_kD); 
-        // SmartDashboard.putNumber("Arm position setPoint:",  this.position);
-    
-    }
+   
       // call if tuning PID in execute
     public void tune(){
-        // double sdkP = SmartDashboard.getNumber("Arm Position kP", RobotMap.arm_position_kP); 
-        // double sdkI = SmartDashboard.getNumber("Arm Position kI", RobotMap.arm_position_kI); 
-        // double sdkD = SmartDashboard.getNumber("Arm Position kD", RobotMap.arm_position_kD); 
+        
     
-        // double setpoint = SmartDashboard.getNumber("Arm position setPoint:", this.position); 
         double sdkP = preferences.getDouble("Arm mm kP", mm_kP); 
         double sdkI = preferences.getDouble("Arm mm kI", mm_kI); 
         double sdkD = preferences.getDouble("Arm mm kD", mm_kD); 
@@ -281,10 +264,7 @@ public class Arm extends Subsystem {
     
     }
 
-    //arb ff
-    public void setPower(double power){
-        arm.set(ControlMode.PercentOutput, power); 
-    }
+    
 
     
 

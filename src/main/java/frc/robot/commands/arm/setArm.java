@@ -22,7 +22,6 @@ public class setArm extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.arm.displayPID();
 
     Robot.arm.setSlot(1);
     

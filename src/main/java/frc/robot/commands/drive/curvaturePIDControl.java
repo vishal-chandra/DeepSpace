@@ -37,12 +37,9 @@ public class curvaturePIDControl extends Command {
     left_command = forward + turn; 
     right_command = forward - turn; 
 
+    // adjusts the left and right commands to be more smooth and accurate 
     double adjusted_left = left_command + skim(right_command); 
     double adjusted_right = right_command + skim(left_command); 
-
-
-
-    
 
   }
   // sets a ramp rate on the input 
