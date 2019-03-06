@@ -28,19 +28,16 @@ public class moveElevatorJoystick extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    if(Robot.elevator.elevator_down.get()){
+      Robot.elevator.resetEncoder();
+    }
     double power = -Robot.oi.xbox.getY(GenericHID.Hand.kRight); 
     SmartDashboard.putNumber("Power applied to elevator", power);
-    // if(power < 0){
-    //   if(Robot.arm.arm.getSensorCollection().isFwdLimitSwitchClosed() || Robot.arm.arm.getSensorCollection().isFwdLimitSwitchClosed()){
-    //       Robot.elevator.setPower(power); 
-    //   }
-    //   else Robot.elevator.setPower(power); 
-
-    // }
-    // else 
+    
     //Robot.elevator.setPower(power); //arb ff
-    if(power > 0 && !(Robot.elevator.carriage_up.get() && Robot.elevator.stage2_up.get())) Robot.elevator.setPower(power); 
-    else if(power < 0 && !(Robot.elevator.elevator_down.get())) Robot.elevator.setPower(power); 
+    if(power > 0 && !(Robot.elevator.carriage_up.get() && Robot.elevator.stage2_up.get())) Robot.elevator.setPower(power);
+    else Robot.elevator.setPower(power); 
+    //else if(power < 0 && !(Robot.elevator.elevator_down.get())) Robot.elevator.setPower(power); 
 
   }
 
@@ -53,11 +50,18 @@ public class moveElevatorJoystick extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.elevator.position = Robot.elevator.getPosition();
+    Robot.elevator.stopElevator();
+
+
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.elevator.position = Robot.elevator.getPosition();
+
+    Robot.elevator.stopElevator();
   }
 }

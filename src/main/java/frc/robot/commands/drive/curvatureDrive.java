@@ -38,15 +38,15 @@ public class curvatureDrive extends Command {
 		left_command = Robot.oi.xbox.getX(GenericHID.Hand.kRight) + Robot.oi.xbox.getY(GenericHID.Hand.kLeft) ; 
 		
 		right_command = Robot.oi.xbox.getX(GenericHID.Hand.kRight) - Robot.oi.xbox.getY(GenericHID.Hand.kLeft) ; 
+		// if(OI.controller.getRawButton(9)){
+		// 	Robot.vision.changePipeline(0);
+
+		// }
+		// else if(OI.controller.getRawButton(10)){
+		// 	Robot.vision.changePipeline(1);
+
+		// }
 		if(OI.controller.getRawButton(9)){
-			Robot.vision.changePipeline(0);
-
-		}
-		else if(OI.controller.getRawButton(10)){
-			Robot.vision.changePipeline(1);
-
-		}
-		else if(OI.controller.getRawButton(6)){
 	    	SmartDashboard.putNumber("Follow: ", Robot.vision.x); 
 
 			double heading_error = (Robot.vision.x); 

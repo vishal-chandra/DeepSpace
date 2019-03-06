@@ -128,8 +128,8 @@ public class OI {
 		//c9.whenPressed(new changePipeline(0));
 		//c10.whenPressed(new changePipeline(1));
 
-		c1.whileHeld(new armPower(Robot.arm.HATCH_HIGH_POWER)); 
-		c2.whileHeld(new armPower(Robot.arm.HATCH_LOW_POWER)); 
+		//c1.whileHeld(new armPower(Robot.arm.HATCH_HIGH_POWER)); 
+		//c2.whileHeld(new armPower(Robot.arm.HATCH_LOW_POWER)); 
 
 		//c6.whileHeld(new armPower(Robot.arm.BALL_HIGH_POWER)); 
 
@@ -145,6 +145,7 @@ public class OI {
 		//c8.whileHeld(new armPower(Robot.arm.NO_HATCH_LOW_POWER)); 
 		c6.whenPressed(new setArmPosition(600)); 
 		c8.whenPressed(new setArmPosition(0)); 
+		c1.whenPressed(new setElevatorPosition(14500));
 		c4.whileHeld(new flySuck()); 
 		c3.whileHeld(new flyShoot());
 		c5.whileHeld(new armRaise());

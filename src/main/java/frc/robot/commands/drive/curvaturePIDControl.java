@@ -22,9 +22,14 @@ public class curvaturePIDControl extends Command {
   double lastValue; 
   long lastTime; 
   double maxChangePerMillis = 0.0; // TODO 
+
+  RampComponent left; 
+  RampComponent right; 
   public curvaturePIDControl() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    left = new RampComponent(1.0); 
+    right = new RampComponent(1.0); 
     requires(Robot.driveTrain); 
   }
 
@@ -40,6 +45,15 @@ public class curvaturePIDControl extends Command {
     // adjusts the left and right commands to be more smooth and accurate 
     double adjusted_left = left_command + skim(right_command); 
     double adjusted_right = right_command + skim(left_command); 
+
+    adjusted_left = left.applyAsDouble(adjusted_left); 
+    adjusted_right = left.applyAsDouble(adjusted_right); 
+
+    Robot.driveTrain.setSpeed(adjusted_left, adjusted_right);
+
+
+    
+
 
   }
   // sets a ramp rate on the input 

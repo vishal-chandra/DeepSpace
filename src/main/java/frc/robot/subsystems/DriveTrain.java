@@ -5,6 +5,7 @@ import frc.robot.RobotMap;
 import frc.robot.commands.drive.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -42,10 +43,11 @@ public class DriveTrain extends Subsystem {
 	private WPI_TalonSRX backLeftSrx; 
 	private WPI_TalonSRX backRightSrx;
 
-	public double MAXIMUM_VELOCITY = 0.0; // take 90-80% of this 
+	public double MAXIMUM_VELOCITY = 3600; // take 90-80% of this 
 
 
-	
+	double left_arbfeedfwd = 0.0; 
+	double right_arbfeedfwd = 0.0; 
 	// left talon id: 1
 	// right talon id: 0 
 	SpeedControllerGroup left; 
@@ -117,6 +119,13 @@ public class DriveTrain extends Subsystem {
 	
 	public void rotateCounterClockWise(){
 		robotDrive.tankDrive(-0.5, 0.5); 
+	}
+
+	public void setSpeed(double left_input, double right_input){
+		
+		backLeftSrx.set(ControlMode.Velocity, left_input * MAXIMUM_VELOCITY, DemandType.ArbitraryFeedForward, left_arbfeedfwd); 
+		backRightSrx.set(ControlMode.Velocity, right_input * MAXIMUM_VELOCITY, DemandType.ArbitraryFeedForward, right_arbfeedfwd); 
+
 	}
 	public void driveNow(Joystick left, Joystick right){
 		

@@ -9,40 +9,32 @@ package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
 
-public class setElevator extends Command {
-  double position; 
-  public setElevator() {
+public class setElevatorPosition extends Command {
+  public double position; 
+  public setElevatorPosition(double position) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.elevator);
+    this.position = position; 
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    //Robot.elevator.setPID(RobotMap.elevator_position_kF, RobotMap.elevator_position_kP, RobotMap.elevator_position_kI, RobotMap.elevator_position_kD);
-    // Motion Magic: 0 
-    // only for tuning purposes
-    Robot.elevator.setSlot(0); 
-
+    Robot.elevator.position = position; 
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // if(Robot.elevator.elevator_down.get()){
-    //   Robot.elevator.resetEncoder();
-    // }
-    this.position = Robot.elevator.position; 
-    Robot.elevator.setPosition(this.position); 
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    Robot.elevator.position = position; 
+
+    return true;
   }
 
   // Called once after isFinished returns true

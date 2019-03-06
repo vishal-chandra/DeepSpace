@@ -41,14 +41,16 @@ public class Elevator extends Subsystem {
   public double HATCH_PICKUP_LOW_LIDAR = 27; 
   public double HATCH_PICKUP_RAISE_LIDAR = 37; 
 
-  public double mm_kP = 0.00; 
+  public double mm_kP = 0.01; 
   public double mm_kI = 0.000; 
   public double mm_kD = 0.000; 
-  public double mm_kF = 0.0; 
+  public double mm_kF = 0.641; 
 
-  public int CRUISE_VELOCITY = 0; 
-  public int ACCELERATION = 0; 
+  public int CRUISE_VELOCITY = 1300; 
+  public int ACCELERATION = 1300; 
   public int kTimeoutMs = 5; 
+
+  public double arbitrary_feedfwd = 0.14; 
 
 
   public Elevator(double position){
@@ -59,7 +61,7 @@ public class Elevator extends Subsystem {
     // encoder stuff 
     elevator.configFactoryDefault();
     elevator.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
-    //elevator.setSensorPhase(true);
+    elevator.setSensorPhase(true);
     elevator.setInverted(true); 
     
     elevator.getSensorCollection().setQuadraturePosition(0, 30);  
@@ -79,6 +81,8 @@ public class Elevator extends Subsystem {
     carriage_up = new DigitalInput(RobotMap.CARRIAGE_UP_SWITCH); 
     stage2_up = new DigitalInput(RobotMap.STAGE2_UP_SWITCH);
     elevator_down = new DigitalInput(RobotMap.ELEVATOR_DOWN_SWITCH); 
+    elevator.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
+
 
     lidar = new LIDAR();
     lidar.startMeasuring();
@@ -89,10 +93,10 @@ public class Elevator extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    //setDefaultCommand(new setElevator());
+    setDefaultCommand(new setElevator());
     
     // moveElevatorJoystick is for finding arbitrary feed forwardd to use with position control
-    setDefaultCommand(new moveElevatorJoystick()); //arb ff
+    //setDefaultCommand(new moveElevatorJoystick()); //arb ff
     //setDefaultCommand(new elevatorLIDAR());
   }
 
@@ -116,9 +120,18 @@ public class Elevator extends Subsystem {
   
   }
   public void setPosition(double setpoint){
-     double feedForward = getFeedForward(); 
-     elevator.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, feedForward); 
+    double feedForward = getFeedForward(); 
+    //|| (!(elevator_down.get()) && setpoint < getPosition())
 
+    if((!(carriage_up.get() && stage2_up.get()) && setpoint > getPosition()) 
+    ){
+      elevator.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, arbitrary_feedfwd); 
+
+    }
+    
+    
+    
+    
       //elevator.set(ControlMode.Position, setpoint); 
   }
 
