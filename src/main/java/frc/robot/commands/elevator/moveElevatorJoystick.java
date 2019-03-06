@@ -28,9 +28,9 @@ public class moveElevatorJoystick extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(Robot.elevator.elevator_down.get()){
-      Robot.elevator.resetEncoder();
-    }
+    // if(Robot.elevator.elevator_down.get()){
+    //   Robot.elevator.resetEncoder();
+    // }
     double power = -Robot.oi.xbox.getY(GenericHID.Hand.kRight); 
     SmartDashboard.putNumber("Power applied to elevator", power);
     

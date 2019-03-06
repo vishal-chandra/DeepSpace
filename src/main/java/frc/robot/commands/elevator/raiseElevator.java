@@ -5,29 +5,27 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.arm;
+package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class flySuck extends Command {
-  public flySuck() {
+public class raiseElevator extends Command {
+  public raiseElevator() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.arm); 
+    requires(Robot.elevator); 
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-
-    Robot.arm.intake(); 
+    Robot.elevator.raiseElevator();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.arm.intake(); 
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -39,16 +37,15 @@ public class flySuck extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.arm.flyStop(); 
-
+    Robot.elevator.position = Robot.elevator.getPosition();
+    Robot.elevator.stopElevator();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.arm.flyStop(); 
-
-
+    Robot.elevator.position = Robot.elevator.getPosition();
+    Robot.elevator.stopElevator();
   }
 }

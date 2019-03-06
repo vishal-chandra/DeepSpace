@@ -143,13 +143,17 @@ public class OI {
 		//c6.whileHeld(new armPower(Robot.arm.BALL_HIGH_POWER)); 
 
 		//c8.whileHeld(new armPower(Robot.arm.NO_HATCH_LOW_POWER)); 
-		c6.whenPressed(new setArmPosition(600)); 
-		c8.whenPressed(new setArmPosition(0)); 
-		c1.whenPressed(new setElevatorPosition(14500));
+		c10.whenPressed(new setArmPosition(600)); 
+		//c2.whenPressed(new setArmPosition(0)); 
+		c1.whenPressed(new setElevatorPosition(16000)); // lower cargo
+		//c10.whenPressed(new setElevatorPosition(44000)); 
+		c2.whenPressed(new setElevatorPosition(0)); 
 		c4.whileHeld(new flySuck()); 
 		c3.whileHeld(new flyShoot());
 		c5.whileHeld(new armRaise());
 		c7.whileHeld(new armLower()); 
+		c6.whileHeld(new raiseElevator()); 
+		c8.whileHeld(new lowerElevator() ); 
 		//c6.whileHeld(new followTape());
 		
 		

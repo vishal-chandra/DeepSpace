@@ -79,8 +79,8 @@ public class Arm extends Subsystem {
 
         ball_intake = new DigitalInput(RobotMap.BALL_INTAKE_SWITCH);
         hatch_pickup = new DigitalInput(RobotMap.HATCH_PICKUP_SWITCH);
-        //armUp = new DigitalInput(RobotMap.ARM_UP_SWITCH); 
-        //armDown = new DigitalInput(RobotMap.ARM_DOWN_SWITCH); 
+        armUp = new DigitalInput(RobotMap.ARM_UP_SWITCH); 
+        armDown = new DigitalInput(RobotMap.ARM_DOWN_SWITCH); 
         
         arm.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
         arm.configNominalOutputForward(0, 10);
@@ -175,7 +175,7 @@ public class Arm extends Subsystem {
 
     }
     public void intake(){
-        if(!getHatch()){
+        if(!getBall()){
             fly.set(0.5);
         }
     }
@@ -213,8 +213,8 @@ public class Arm extends Subsystem {
 
 
     public void updateSmartDashboard(){
-        //SmartDashboard.putBoolean("arm up: ", armUp.get()); 
-        //SmartDashboard.putBoolean("arm down:", armDown.get()); 
+        SmartDashboard.putBoolean("arm up: ", armUp.get()); 
+        SmartDashboard.putBoolean("arm down:", armDown.get()); 
         SmartDashboard.putBoolean("get ball" , getBall()); 
         SmartDashboard.putBoolean("get hatch", getHatch());
 

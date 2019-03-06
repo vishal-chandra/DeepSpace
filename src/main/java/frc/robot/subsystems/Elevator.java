@@ -41,8 +41,8 @@ public class Elevator extends Subsystem {
   public double HATCH_PICKUP_LOW_LIDAR = 27; 
   public double HATCH_PICKUP_RAISE_LIDAR = 37; 
 
-  public double mm_kP = 0.01; 
-  public double mm_kI = 0.000; 
+  public double mm_kP = 0.005; 
+  public double mm_kI = 0.000005; 
   public double mm_kD = 0.000; 
   public double mm_kF = 0.641; 
 
@@ -50,7 +50,7 @@ public class Elevator extends Subsystem {
   public int ACCELERATION = 1300; 
   public int kTimeoutMs = 5; 
 
-  public double arbitrary_feedfwd = 0.14; 
+  public double arbitrary_feedfwd = 0.04; 
 
 
   public Elevator(double position){
