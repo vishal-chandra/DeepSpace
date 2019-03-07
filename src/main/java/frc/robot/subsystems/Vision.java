@@ -59,26 +59,7 @@ public class Vision extends Subsystem {
 	
 	public boolean toggle = true; 
 	public Vision(){
-//		CameraServer cs = CameraServer.getInstance(); 
-//		
-//		cam0 = cs.startAutomaticCapture("cam0", 0); 
-//		cam1 = cs.startAutomaticCapture("cam1", 1); 
-//
-//		cs.addCamera(cam0); 
-//		cs.addCamera(cam1); 
-//		
-//		
-////		cam0 = new UsbCamera("cam0", 0); 
-////		cam1 = new UsbCamera("cam1", 1);  
-////		
-//		cam0.setResolution(320, 240); 
-//		cam1.setResolution(320, 240); 
-//		
-//		cam0.setFPS(15); 
-//		cam1.setFPS(15); 
-//		
-//		server = cs.getServer(); 
-//		server.setSource(cam0); 
+
 		
 		table = NetworkTableInstance.getDefault().getTable("limelight"); 
 		tx = table.getEntry("tx"); 

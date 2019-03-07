@@ -1,6 +1,10 @@
 package frc.robot;
 
 import frc.robot.commands.arm.*;
+import frc.robot.commands.commandGroups.firstBallLevel;
+import frc.robot.commands.commandGroups.resetArmElevator;
+import frc.robot.commands.commandGroups.secondBallLevel;
+import frc.robot.commands.commandGroups.thirdBallLevel;
 import frc.robot.commands.drive.*;
 import frc.robot.commands.elevator.*;
 import frc.robot.commands.vision.*;
@@ -86,10 +90,8 @@ public class OI {
 		Button c12 = new JoystickButton(controller, 12);
 		
 	public static XboxController xbox = new XboxController(0);
-		//Button x1 = new JoystickButton(xbox, 1); 
 		 
 
-//	public static Joystick xbox = new Joystick(2);
 		Button x1 = new JoystickButton(xbox, 1);
 		Button x2 = new JoystickButton(xbox, 2);
 		Button x3 = new JoystickButton(xbox, 3);
@@ -117,41 +119,29 @@ public class OI {
 		/* logitech controller */
 
 
-		// r1.toggleWhenPressed(new driveBaseSwitchDirections());
-		//c1.whileHeld(new rotateClockwise());
-		//c2.whileHeld(new rotateCounterClockwise());
-		//c3.whenPressed(new turnRight90()); 
-		//c4.whenPressed(new autoAlign()); 
 		//c7.whileHeld(new driveStraight(-0.8, -0.8));
-		//x1.whileHeld(new driveStraight(0.6, 0.6));
-		//c6.whenPressed(new followTarget());
+		x1.whileHeld(new driveStraight(0.6, 0.6));
 		//c9.whenPressed(new changePipeline(0));
 		//c10.whenPressed(new changePipeline(1));
 
-		//c1.whileHeld(new armPower(Robot.arm.HATCH_HIGH_POWER)); 
-		//c2.whileHeld(new armPower(Robot.arm.HATCH_LOW_POWER)); 
 
-		//c6.whileHeld(new armPower(Robot.arm.BALL_HIGH_POWER)); 
 
-		//c8.whileHeld(new armPower(Robot.arm.NO_HATCH_LOW_POWER)); 
 
-		//c9.whenPressed(new elevatorLIDAR(Robot.elevator.HATCH_PICKUP_LOW_LIDAR));
-		//c10.whenPressed(new elevatorLIDAR(Robot.elevator.HATCH_PICKUP_RAISE_LIDAR)); 
 		
 		 
-//		c8.whenPressed(new streamCameras());
 		//c6.whileHeld(new armPower(Robot.arm.BALL_HIGH_POWER)); 
 
-		//c8.whileHeld(new armPower(Robot.arm.NO_HATCH_LOW_POWER)); 
-		c10.whenPressed(new setArmPosition(600)); 
-		//c2.whenPressed(new setArmPosition(0)); 
-		c1.whenPressed(new setElevatorPosition(16000)); // lower cargo
-		//c10.whenPressed(new setElevatorPosition(44000)); 
-		c2.whenPressed(new setElevatorPosition(0)); 
-		c4.whileHeld(new flySuck()); 
-		c3.whileHeld(new flyShoot());
+		c1.whenPressed(new firstBallLevel()); // lower cargo
+		c2.whenPressed(new secondBallLevel()); 
+		c3.whenPressed(new thirdBallLevel());
+		c4.whenPressed(new resetArmElevator());
+		
+		c9.whileHeld(new flySuck()); 
+		c10.whileHeld(new flyShoot());
+
 		c5.whileHeld(new armRaise());
 		c7.whileHeld(new armLower()); 
+
 		c6.whileHeld(new raiseElevator()); 
 		c8.whileHeld(new lowerElevator() ); 
 		//c6.whileHeld(new followTape());

@@ -198,9 +198,7 @@ public class DriveTrain extends Subsystem {
 
 		//SmartDashboard.putNumber("Drive Encoder One - Right Side", getEncoderOne());
 
-		SmartDashboard.putBoolean("Backwards:" , backwards);  
-		SmartDashboard.putNumber("a;slkdfjal;skdfj", 200);
-		SmartDashboard.putNumber("Angle:", getYaw()); 
+		SmartDashboard.putNumber("Drivetrain Angle:", getYaw()); 
 		SmartDashboard.putNumber("Left Encoder: ", getLeft());
 		SmartDashboard.putNumber("Right Encoder: ", getRight()); 
 

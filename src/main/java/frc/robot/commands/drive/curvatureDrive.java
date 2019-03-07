@@ -18,6 +18,10 @@ public class curvatureDrive extends Command {
 	double left_command; 
 	double right_command; 
 	double angle_setPoint; 
+
+	double leftUltra; 
+	double rightUltra; 
+	double ultra_kP = 0.05; 
     public curvatureDrive() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -46,7 +50,7 @@ public class curvatureDrive extends Command {
 		// 	Robot.vision.changePipeline(1);
 
 		// }
-		if(OI.controller.getRawButton(9)){
+		if(OI.xbox.getRawButton(2)){
 	    	SmartDashboard.putNumber("Follow: ", Robot.vision.x); 
 
 			double heading_error = (Robot.vision.x); 
@@ -70,26 +74,21 @@ public class curvatureDrive extends Command {
 		}
 		else if(OI.xbox.getRawButton(1)){
 			
-			// Robot.vision.getPhotoSensorValues();
-      		// String value = Robot.vision.sensorValues;
+			// leftUltra = Robot.vision.leftUltra();
+    		// rightUltra = Robot.vision.rightUltra();
 
-     		//  double angle = 0;
-    		//  double speed = 0.25;
+    		// double error = rightUltra - leftUltra; 
 
-      		// if(value.equals("100")) angle = -0.15; //slight left
-      		// else if(value.equals("110")) angle = -0.07; //very slight left
+    		// left_command = Robot.oi.xbox.getX(GenericHID.Hand.kRight) + Robot.oi.xbox.getY(GenericHID.Hand.kLeft) ; 
+		
+			// right_command = Robot.oi.xbox.getX(GenericHID.Hand.kRight) - Robot.oi.xbox.getY(GenericHID.Hand.kLeft) ; 
 
-      		// else if(value.equals("001")) angle = 0.15; //slight right
-      		// else if(value.equals("011")) angle = 0.7; //very slight right
+    		// double steering_adjust = error * ultra_kP; 
 
-     		// else if(value.equals("010")) angle = 0; //go straight
-      		// else if(value.equals("101") || value.equals("111") || value.equals("000")) 
-     		// {
-          	// 	angle = 0; 
-          	// 	speed = 0; //stop, there's been an error
-     		// }
+    		// left_command -= steering_adjust; 
+    		// right_command += steering_adjust; 
 
-			//  Robot.driveTrain.curavtureDrive(speed, angle);
+    		// Robot.driveTrain.driveCertainAmounts(left_command, right_command); 
 		}
 //		else if(OI.controller.getRawButton(8)){
 //			left_command = 0.5; 

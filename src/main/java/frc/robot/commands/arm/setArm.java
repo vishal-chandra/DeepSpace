@@ -8,6 +8,7 @@
 package frc.robot.commands.arm;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.RobotMap; 
 
@@ -31,7 +32,10 @@ public class setArm extends Command {
   @Override
   protected void execute() {
     //Robot.arm.tune();
-    this.position = Robot.arm.position; 
+    if(Math.abs(OI.controller.getRawAxis(3)) > 0.1){
+      Robot.arm.setPower(-OI.controller.getRawAxis(3)); 
+    }
+    this.position = Robot.arm.position;  
 
     Robot.arm.setPosition(this.position); 
   }

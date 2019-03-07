@@ -95,8 +95,6 @@ public class Arm extends Subsystem {
 
 
         // POSITION: 0 
-        this.setPID(0, arm_position_kF, 
-            arm_position_kP, arm_position_kI, arm_position_kD); 
     
     // Motion Magic: 1
         arm.configMotionCruiseVelocity(CRUISE_VELOCITY, kTimeoutMs); 
@@ -108,7 +106,7 @@ public class Arm extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-        setDefaultCommand(new setArm()); 
+        //setDefaultCommand(new setArm()); 
         //setDefaultCommand(new armHold());
     }
     
