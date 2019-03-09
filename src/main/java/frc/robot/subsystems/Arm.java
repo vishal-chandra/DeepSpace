@@ -87,7 +87,7 @@ public class Arm extends Subsystem {
         arm.configNominalOutputReverse(0, 10);
         arm.configPeakOutputForward(1.0, 10); 
         arm.configPeakOutputReverse(-1.0, 10);
-        arm.getSensorCollection().setQuadraturePosition(0, 10);  
+        arm.getSensorCollection().setQuadraturePosition(-1180, 10);  
 
 
         arm.setSensorPhase(false); 
@@ -106,7 +106,7 @@ public class Arm extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-        //setDefaultCommand(new setArm()); 
+        setDefaultCommand(new setArm()); 
         //setDefaultCommand(new armHold());
     }
     
@@ -169,6 +169,7 @@ public class Arm extends Subsystem {
     }
     
     public void resetArm(){
+        this.position = 0; 
         arm.getSensorCollection().setQuadraturePosition(0, 30);
 
     }

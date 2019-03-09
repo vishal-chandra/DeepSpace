@@ -37,12 +37,12 @@ public class Elevator extends Subsystem {
   public DigitalInput carriage_up; 
   public DigitalInput stage2_up;
 
-  public double MAX_ENCODER_POSITION = 48119; 
+  public double MAX_ENCODER_POSITION = 47000; 
   public double HATCH_PICKUP_LOW_LIDAR = 27; 
   public double HATCH_PICKUP_RAISE_LIDAR = 37; 
 
-  public double mm_kP = 0.005; 
-  public double mm_kI = 0.000005; 
+  public double mm_kP = 0.008; 
+  public double mm_kI = 0.000008; 
   public double mm_kD = 0.000; 
   public double mm_kF = 0.641; 
 
@@ -50,7 +50,7 @@ public class Elevator extends Subsystem {
   public int ACCELERATION = 1300; 
   public int kTimeoutMs = 5; 
 
-  public double arbitrary_feedfwd = 0.04; 
+  public double arbitrary_feedfwd = 0.05; 
 
 
   public Elevator(double position){
@@ -122,16 +122,8 @@ public class Elevator extends Subsystem {
   public void setPosition(double setpoint){
     double feedForward = getFeedForward(); 
     //|| (!(elevator_down.get()) && setpoint < getPosition())
-
-    if((!(carriage_up.get() && stage2_up.get()) && setpoint > getPosition()) 
-    ){
+      
       elevator.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, arbitrary_feedfwd); 
-
-    }
-    
-    
-    
-    
       //elevator.set(ControlMode.Position, setpoint); 
   }
 
@@ -144,16 +136,16 @@ public class Elevator extends Subsystem {
   }
 
   public void raiseElevator(){
-    //if(!(carriage_up.get() && stage2_up.get())){
-      elevator.set(ControlMode.PercentOutput, 0.5); 
-    //}
+    if(!(carriage_up.get() && stage2_up.get())){
+      elevator.set(ControlMode.PercentOutput, 0.3); 
+    }
 
   }
 
   public void lowerElevator(){
-    //if(!elevator_down.get()){
-      elevator.set(ControlMode.PercentOutput, -0.5); 
-    //}
+    if(!elevator_down.get()){
+      elevator.set(ControlMode.PercentOutput, -0.3); 
+    }
 
   }
 
@@ -161,6 +153,7 @@ public class Elevator extends Subsystem {
     elevator.set(ControlMode.PercentOutput, 0.0); 
   }
   public void resetEncoder(){
+    this.position = 0; 
     elevator.getSensorCollection().setQuadraturePosition(0, 10);
 
   }
@@ -181,6 +174,7 @@ public class Elevator extends Subsystem {
   }
 
   public void resetElevator(){
+    this.position = 0; 
     elevator.getSensorCollection().setQuadraturePosition(0, 30);
   }
 
@@ -189,6 +183,7 @@ public class Elevator extends Subsystem {
   }
   public void updateSmartDashboard(){
     SmartDashboard.putNumber("Elevator Position:", getPosition()); 
+    SmartDashboard.putNumber("Elevator setPoint:", this.position); 
     SmartDashboard.putNumber("Elevator Speed: ", getSpeed());
     SmartDashboard.putNumber("Lidar Distance: ", lidar.getDistance());
 

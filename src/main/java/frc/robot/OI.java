@@ -138,12 +138,13 @@ public class OI {
 		
 		c9.whileHeld(new flySuck()); 
 		c10.whileHeld(new flyShoot());
+		//c9.whenPressed(new setArmPosition(0)); 
+		//c10.whenPressed(new setArmPosition(600)); 
+		c6.whileHeld(new armRaise());
+		c8.whileHeld(new armLower()); 
 
-		c5.whileHeld(new armRaise());
-		c7.whileHeld(new armLower()); 
-
-		c6.whileHeld(new raiseElevator()); 
-		c8.whileHeld(new lowerElevator() ); 
+		c5.whileHeld(new raiseElevator()); 
+		c7.whileHeld(new lowerElevator() ); 
 		//c6.whileHeld(new followTape());
 		
 		

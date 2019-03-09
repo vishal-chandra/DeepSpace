@@ -20,7 +20,9 @@ public class lowerElevator extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.elevator.lowerElevator();
+    if(!(Robot.elevator.elevator_down.get())){
+      Robot.elevator.lowerElevator();
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -31,7 +33,7 @@ public class lowerElevator extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return Robot.elevator.elevator_down.get();
   }
 
   // Called once after isFinished returns true

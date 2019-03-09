@@ -53,7 +53,7 @@ public class Robot extends TimedRobot {
 		driveTrain = new DriveTrain(); 
 		vision = new Vision(); 
 		elevator = new Elevator(0); 
-		arm = new Arm(0); 
+		arm = new Arm(1180); 
 
 		oi = new OI();
 //		chooser.addDefault("Default Auto", new ExampleCommand());
@@ -62,7 +62,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Reset Arm", new resetArm());
 		SmartDashboard.putData("Reset Elevator", new resetElevatorEncoder());
 		//SmartDashboard.putData("Set Arm:", new setArm()); 
-        //SmartDashboard.putData("Reset Gyro", new resetGyro());
+        SmartDashboard.putData("Reset Gyro", new resetGyro());
         //SmartDashboard.putData("Fill:", new fillTanks());
 
 	}

@@ -154,7 +154,7 @@ public class DriveTrain extends Subsystem {
 //		}
 		forward = Math.abs(forward) < 0.2 ? 0 : forward; 
 		turn = Math.abs(turn) < 0.2 ? 0 : turn; 
-		robotDrive.curvatureDrive(forward * Math.abs(forward), turn * Math.abs(turn), true);
+		robotDrive.curvatureDrive(forward * Math.abs(forward) * 0.8, turn * Math.abs(turn) * 0.8, true);
 
 	}
 

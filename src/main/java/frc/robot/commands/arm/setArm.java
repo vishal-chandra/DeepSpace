@@ -32,9 +32,9 @@ public class setArm extends Command {
   @Override
   protected void execute() {
     //Robot.arm.tune();
-    if(Math.abs(OI.controller.getRawAxis(3)) > 0.1){
-      Robot.arm.setPower(-OI.controller.getRawAxis(3)); 
-    }
+    // if(Math.abs(OI.controller.getRawAxis(3)) > 0.1){
+    //   Robot.arm.setPower(-OI.controller.getRawAxis(3)); 
+    // }
     this.position = Robot.arm.position;  
 
     Robot.arm.setPosition(this.position); 

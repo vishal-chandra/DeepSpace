@@ -36,7 +36,16 @@ public class setElevator extends Command {
     //   Robot.elevator.resetEncoder();
     // }
     this.position = Robot.elevator.position; 
-    Robot.elevator.setPosition(this.position); 
+
+    // if(Robot.elevator.elevator_down.get()){
+    //   Robot.elevator.resetEncoder();
+    //   Robot.elevator.position = 0; 
+    // }
+    if((!(Robot.elevator.carriage_up.get() && Robot.elevator.stage2_up.get()) && position > Robot.elevator.getPosition())
+    || (!(Robot.elevator.elevator_down.get()) && position < Robot.elevator.getPosition()) ){
+
+      Robot.elevator.setPosition(this.position); 
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

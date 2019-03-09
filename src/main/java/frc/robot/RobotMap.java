@@ -26,8 +26,8 @@ public class RobotMap {
 	public static int ARM_UP_SWITCH 		= 6;
 	public static int CARRIAGE_UP_SWITCH 	= 5;
 	public static int STAGE2_UP_SWITCH		= 8;
-	public static int ELEVATOR_DOWN_SWITCH 	= 7;
-	public static int ARM_DOWN_SWITCH 		= 9;
+	public static int ELEVATOR_DOWN_SWITCH 	= 9;
+	public static int ARM_DOWN_SWITCH 		= 7;
 
 	// MOTOR PORTS 
 	public static  int BACK_LEFT_MOTOR = 1; 
