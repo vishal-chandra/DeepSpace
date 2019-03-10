@@ -141,7 +141,7 @@ public class Arm extends Subsystem {
     }
 
     public void raiseArm(){
-        arm.set(ControlMode.PercentOutput, 0.20);	
+        arm.set(ControlMode.PercentOutput, 0.35);	
     }
     
     public void lowerArm(){
@@ -173,14 +173,14 @@ public class Arm extends Subsystem {
         arm.getSensorCollection().setQuadraturePosition(0, 30);
 
     }
+
+    //reversed flywheel commands for belt change
     public void intake(){
-        if(!getBall()){
-            fly.set(0.5);
-        }
+        fly.set(-0.5);
     }
 
     public void shoot(){
-        fly.set(-0.5); 
+        fly.set(0.5); 
     }
 
     public void flyStop(){

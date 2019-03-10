@@ -59,7 +59,18 @@ public class Vision extends Subsystem {
 	
 	public boolean toggle = true; 
 	public Vision(){
+		CameraServer cs = CameraServer.getInstance();
 
+		cam0 = cs.startAutomaticCapture("cam0", 0); 
+
+		cam0.setResolution(320, 240); 
+		cam0.setFPS(15); 
+
+		server = cs.getServer(); 
+		server.setSource(cam0); 
+
+
+		
 		
 		table = NetworkTableInstance.getDefault().getTable("limelight"); 
 		tx = table.getEntry("tx"); 
@@ -99,9 +110,11 @@ public class Vision extends Subsystem {
 	}
 
 	public double rightUltra(){
-		double mV = rightUltra.getVoltage() * 1000; 
-		double mm = mV / 4.88 * 5; 
-		return mm / 1000 * 3.28; // returns in feet	
+		// double mV = rightUltra.getVoltage() * 1000; 
+		// double mm = mV / 4.88 * 5; 
+		// return mm / 1000 * 3.28; // returns in feet	
+
+		return rightUltra.getVoltage(); 
 	}
 	
 	//sensor value flipped: false --> true

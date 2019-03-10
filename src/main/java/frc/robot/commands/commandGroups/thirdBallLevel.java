@@ -29,10 +29,10 @@ public class thirdBallLevel extends CommandGroup {
 
     // A command group will require all of the subsystems that each member
     // would require.
-    // e.g. if Command1 requires chassis, and Command2 requires arm,
+    // e.g. if Command1 requires chas sis, and Command2 requires arm,
     // a CommandGroup containing them would require both the chassis and the
     // arm.
     addParallel(new setElevatorPosition(44000)); 
-    addSequential(new setArmPosition(600)); 
+    addSequential(new setArmPosition(700)); 
   }
 }

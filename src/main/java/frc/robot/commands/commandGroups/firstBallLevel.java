@@ -32,7 +32,7 @@ public class firstBallLevel extends CommandGroup {
     // e.g. if Command1 requires chassis, and Command2 requires arm,
     // a CommandGroup containing them would require both the chassis and the
     // arm.
-    addParallel(new setElevatorPosition(16000));
-    addSequential(new setArmPosition(0)); 
+    addParallel(new setElevatorPosition(0));
+    addSequential(new setArmPosition(600)); 
   }
 }
