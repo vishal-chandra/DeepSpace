@@ -121,6 +121,7 @@ public class Arm extends Subsystem {
         double currentPos = arm.getSelectedSensorPosition(); 
         return Math.abs(targetPos - currentPos) < tolerance; 
     }
+
     public double getFeedForward(){
         double radians = Math.toRadians(getAngle()); 
         double feedForward = horizontal_hold_output * Math.cos(radians); 
@@ -176,11 +177,12 @@ public class Arm extends Subsystem {
 
     //reversed flywheel commands for belt change
     public void intake(){
-        fly.set(-0.5);
+        fly.set(-0.6);
+        if(getBall()) position = 600;
     }
 
     public void shoot(){
-        fly.set(0.5); 
+        fly.set(0.6); 
     }
 
     public void flyStop(){

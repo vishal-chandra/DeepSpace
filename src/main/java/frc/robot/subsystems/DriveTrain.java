@@ -67,8 +67,6 @@ public class DriveTrain extends Subsystem {
 	DifferentialDrive robotDrive; 
 
 	public DriveTrain(){
-//		leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_ONE, RobotMap.LEFT_ENCODER_TWO, false, Encoder.EncodingType.k4X);
-//		rightEncoder = new Encoder(RobotMap.RIGHT_ENCODER_ONE, RobotMap.RIGHT_ENCODER_TWO, false, Encoder.EncodingType.k4X);
 		backLeftSrx = new WPI_TalonSRX(RobotMap.BACK_LEFT_MOTOR);//1 
 
 		frontLeftSpx = new WPI_VictorSPX(RobotMap.FRONT_LEFT_MOTOR); //2 
@@ -88,10 +86,7 @@ public class DriveTrain extends Subsystem {
 		backLeftSrx.getSensorCollection().setQuadraturePosition(0, 10); 
     	backRightSrx.getSensorCollection().setQuadraturePosition(0, 10);
 
-
-
 		robotDrive = new DifferentialDrive(left, right); 
-//		robotDrive = new RobotDrive(topLeft, bottomLeft,  topRight, bottomRight); 
 		robotDrive.setSafetyEnabled(false);
 		
 		gyroSensor = new AHRS(SPI.Port.kMXP);
@@ -108,7 +103,6 @@ public class DriveTrain extends Subsystem {
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new MySpecialCommand());
-		//setDefaultCommand(new drive()); 
 		setDefaultCommand(new curvatureDrive()); 
 
 	}
@@ -146,12 +140,7 @@ public class DriveTrain extends Subsystem {
 		frontRightSpx.setInverted(backwards);
 		backRightSrx.setInverted(backwards);
 		if(forward < -0.1 ) turn = -turn; 
-//		if(Math.abs(forward) < 0.05 && Math.abs(turn) > 0){
-//			robotDrive.tankDrive(-turn, turn);
-//		}
-//		else{
-//			robotDrive.curvatureDrive(forward, turn, false);
-//		}
+
 		forward = Math.abs(forward) < 0.2 ? 0 : forward; 
 		turn = Math.abs(turn) < 0.2 ? 0 : turn; 
 		robotDrive.curvatureDrive(forward * Math.abs(forward) * 0.8, turn * Math.abs(turn) * 0.8, true);
@@ -196,7 +185,6 @@ public class DriveTrain extends Subsystem {
 		//		SmartDashboard.putNumber("Ultrasonic sensor one", getDistanceOne()); 
 		//		SmartDashboard.putNumber("Ultrasonic sensor two", getDistanceTwo()); 
 
-		//SmartDashboard.putNumber("Drive Encoder One - Right Side", getEncoderOne());
 
 		SmartDashboard.putNumber("Drivetrain Angle:", getYaw()); 
 		SmartDashboard.putNumber("Left Encoder: ", getLeft());
@@ -204,6 +192,6 @@ public class DriveTrain extends Subsystem {
 
 
 	}
-	//
+	
 
 }

@@ -44,11 +44,12 @@ public class RobotMap {
 	public static int LEFT_ULTRA = 1; 
 	public static int RIGHT_ULTRA = 0; 
 
-	// elevator motor controlle
+	// elevator motor controller
 	public static  int ELEVATOR = 5; 
 
-	//ball actuator thing 
+	//ball actuator motor 
 	public static  int ARM_ACTUATOR = 6; 
+
 	//fly wheels 
 	public static  int FLY = 0; 
 

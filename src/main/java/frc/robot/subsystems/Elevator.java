@@ -41,9 +41,9 @@ public class Elevator extends Subsystem {
   public double HATCH_PICKUP_LOW_LIDAR = 27; 
   public double HATCH_PICKUP_RAISE_LIDAR = 37; 
 
-  public double mm_kP = 0.0095; 
-  public double mm_kI = 0.0000095; 
-  public double mm_kD = 0.000; 
+  public double mm_kP = 0.01; 
+  public double mm_kI = 0.00001; 
+  public double mm_kD = 0.0002; 
   public double mm_kF = 0.641; 
 
   public int CRUISE_VELOCITY = 1300; 
@@ -101,17 +101,6 @@ public class Elevator extends Subsystem {
   }
 
 
-
-  /*
-  Methods: 
-    lift: up/down 
-    set position 
-
-    get encoder 
-    reset encoder 
-
-  */
-
   public double getFeedForward(){
     double feedForward = 0.0; 
     
@@ -137,15 +126,17 @@ public class Elevator extends Subsystem {
 
   public void raiseElevator(){
     if(!(carriage_up.get() && stage2_up.get())){
-      elevator.set(ControlMode.PercentOutput, 0.4); 
     }
+    elevator.set(ControlMode.PercentOutput, 0.4); 
+
 
   }
 
   public void lowerElevator(){
     if(!elevator_down.get()){
-      elevator.set(ControlMode.PercentOutput, -0.4); 
     }
+    elevator.set(ControlMode.PercentOutput, -0.4); 
+
 
   }
 

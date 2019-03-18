@@ -31,11 +31,8 @@ public class RampComponent {
     public double applyAsDouble(double value){
         if(value > lastValue){
             lastValue = Math.min(value, lastValue + (System.currentTimeMillis() - lastTime) * maxChangePerMillis); 
-
-
         } else {
-            lastValue = Math.max(value, lastValue - (System.currentTimeMillis() - lastTime) * maxChangePerMillis); 
-
+            lastValue = Math.max(value, lastValue - (System.currentTimeMillis() - lastTime) * maxChangePerMillis);
         }
         lastTime = System.currentTimeMillis(); 
         return lastValue; 

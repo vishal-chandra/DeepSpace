@@ -21,7 +21,6 @@ public class curvaturePIDControl extends Command {
 
   double lastValue; 
   long lastTime; 
-  double maxChangePerMillis = 0.0; // TODO 
 
   RampComponent left; 
   RampComponent right; 
@@ -36,30 +35,8 @@ public class curvaturePIDControl extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    forward = -Robot.oi.xbox.getY(GenericHID.Hand.kLeft);
-    turn = Robot.oi.xbox.getX(GenericHID.Hand.kRight);
 
-    left_command = forward + turn; 
-    right_command = forward - turn; 
-
-    // adjusts the left and right commands to be more smooth and accurate 
-    double adjusted_left = left_command + skim(right_command); 
-    double adjusted_right = right_command + skim(left_command); 
-
-    adjusted_left = left.applyAsDouble(adjusted_left); 
-    adjusted_right = left.applyAsDouble(adjusted_right); 
-
-    Robot.driveTrain.setSpeed(adjusted_left, adjusted_right);
-
-
-    
-
-
-  }
-  // sets a ramp rate on the input 
-  double ramp(double value){
-    return 0.0; // TODO
-  }
+  }  
 
   double skim(double v){
     if(v > 1.0){
@@ -74,6 +51,22 @@ public class curvaturePIDControl extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    forward = -Robot.oi.xbox.getY(GenericHID.Hand.kLeft);
+    turn = Robot.oi.xbox.getX(GenericHID.Hand.kRight);
+
+    left_command = forward + turn; 
+    right_command = forward - turn; 
+
+    // adjusts the left and right commands, if left or right has a magnitude greater than 1 then scale 
+    // so that it's adjusted better 
+    double adjusted_left = left_command + skim(right_command); 
+    double adjusted_right = right_command + skim(left_command); 
+
+    // ramp the inputs to the desired setpoint 
+    adjusted_left = left.applyAsDouble(adjusted_left); 
+    adjusted_right = right.applyAsDouble(adjusted_right); 
+
+    Robot.driveTrain.setSpeed(adjusted_left, adjusted_right);
     
 
   }
