@@ -33,7 +33,7 @@ public class secondBallLevel extends CommandGroup {
     // a CommandGroup containing them would require both the chassis and the
     // arm.
 
-    addParallel(new setElevatorPosition(35000)); 
-    addSequential(new setArmPosition(200)); 
+    addParallel(new setElevatorPosition(27000)); 
+    addSequential(new setArmPosition(470)); 
   }
 }

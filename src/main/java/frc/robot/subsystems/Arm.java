@@ -49,15 +49,15 @@ public class Arm extends Subsystem {
     public double BALL_HIGH_POWER = 0.1; 
 
     public double mm_kP = 0.15; 
-    public double mm_kI = 0.000; 
+    public double mm_kI = 0.0002; 
     public double mm_kD = 0.000; 
     public double mm_kF = 3.279; 
-    public int kTimeoutMs = 5; 
+    public int kTimeoutMs = 5;
 
     int CRUISE_VELOCITY  = 312; // TODO 
     int ACCELERATION = 312; // TODO
 
-    double horizontal_hold_output = 0.1; 
+    double horizontal_hold_output = 0.11; 
 
     public static  double arm_position_kF = 0.0; 
 	public static  double arm_position_kP = 0.02; 
