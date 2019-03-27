@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class curvatureDrive extends Command {
 	double Kp = 0.04;
-	double drive_straight_kp = -0.02;
+	double drive_straight_kp = -0.01;
 	double min_command = 0.25; 
 	double min_speed = -0.1; 
 
@@ -41,21 +41,36 @@ public class curvatureDrive extends Command {
 		//double rightTrigger = Robot.oi.xbox.getTriggerAxis(Hand.kRight);
 		//SmartDashboard.putNumber("Right trigger:", rightTrigger); 
 		Robot.vision.getValues();
-		if(!driving_straight){
-			angle_setPoint = Robot.driveTrain.getYaw(); 
-
-		}
-		left_command = Robot.oi.xbox.getX(GenericHID.Hand.kRight) + Robot.oi.xbox.getY(GenericHID.Hand.kLeft) ; 
 		
-		right_command = Robot.oi.xbox.getX(GenericHID.Hand.kRight) - Robot.oi.xbox.getY(GenericHID.Hand.kLeft) ; 
+		left_command  = -Robot.oi.xbox.getY(GenericHID.Hand.kLeft) + Robot.oi.xbox.getX(GenericHID.Hand.kRight); 
+		right_command = -Robot.oi.xbox.getY(GenericHID.Hand.kLeft) - Robot.oi.xbox.getX(GenericHID.Hand.kRight); 
+
 		// if(OI.controller.getRawButton(9)){
 		// 	Robot.vision.changePipeline(0);
-
 		// }
 		// else if(OI.controller.getRawButton(10)){
 		// 	Robot.vision.changePipeline(1);
-
 		// }
+		// if(driving_straight){
+		// 	double angle_error = angle_setPoint - Robot.driveTrain.getYaw(); 
+		// 	left_command = -Robot.oi.xbox.getY(GenericHID.Hand.kLeft); 
+		// 	right_command = -Robot.oi.xbox.getY(GenericHID.Hand.kLeft); 
+
+		// 	double steering_adjust = 0.0; 
+			
+		// 	steering_adjust = drive_straight_kp * angle_error; 
+			
+		// 	left_command -= steering_adjust; 
+		// 	right_command += steering_adjust; 
+			
+		// 	Robot.driveTrain.driveCertainAmounts(left_command, right_command);
+		// }
+		// if(Math.abs(Robot.oi.xbox.getY(GenericHID.Hand.kLeft)) > 0.2 && Math.abs(Robot.oi.xbox.getX(GenericHID.Hand.kRight)) < 0.2 
+		// 	&& !driving_straight ){
+		// 	angle_setPoint = Robot.driveTrain.getYaw(); 
+		// 	driving_straight = true;
+		// }
+
 		if(OI.xbox.getRawButton(2)){
 	    	SmartDashboard.putNumber("Follow: ", Robot.vision.x); 
 
@@ -79,37 +94,13 @@ public class curvatureDrive extends Command {
 			
 		}
 		
-//		else if(OI.controller.getRawButton(8)){
-//			left_command = 0.5; 
-//			right_command = 0.5; 
-//			double angle_error = -Robot.driveTrain.getYaw(); 
-//			double steering_adjust = 0.0; 
-//			
-//			steering_adjust = drive_straight_kp * angle_error; 
-//			left_command -= steering_adjust; 
-//			right_command += steering_adjust; 
-//			
-//			Robot.driveTrain.driveCertainAmounts(left_command, right_command);
-//		}
-		// else if(Math.abs(Robot.oi.xbox.getY(GenericHID.Hand.kLeft)) > 0 && Math.abs(Robot.oi.xbox.getX(GenericHID.Hand.kRight)) < 0.1 ){
-		// 	driving_straight = true; 
-		// 	double angle_error = angle_setPoint - Robot.driveTrain.getYaw(); 
-		// 	left_command = -Robot.oi.xbox.getY(GenericHID.Hand.kLeft); 
-		// 	right_command = -Robot.oi.xbox.getY(GenericHID.Hand.kLeft); 
+		Robot.driveTrain.driveCertainAmounts(left_command, right_command);
 
-		// 	double steering_adjust = 0.0; 
+		// else if(Math.abs(Robot.oi.xbox.getX(GenericHID.Hand.kRight)) > 0.2){
+		// 	driving_straight = false; 
+		// 	Robot.driveTrain.curavtureDrive(-Robot.oi.xbox.getY(GenericHID.Hand.kLeft), Robot.oi.xbox.getX(GenericHID.Hand.kRight));
 			
-		// 	steering_adjust = drive_straight_kp * angle_error; 
-			
-		// 	left_command -= steering_adjust; 
-		// 	right_command += steering_adjust; 
-			
-		// 	Robot.driveTrain.driveCertainAmounts(left_command, right_command);
 		// }
-		else{
-			Robot.driveTrain.curavtureDrive(-Robot.oi.xbox.getY(GenericHID.Hand.kLeft), Robot.oi.xbox.getX(GenericHID.Hand.kRight));
-			
-		}
     }
 
     // Make this return true when this Command no longer needs to run execute()

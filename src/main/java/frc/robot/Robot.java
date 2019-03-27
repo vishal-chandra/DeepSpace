@@ -50,8 +50,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		//driveTrain = new DriveTrain(); 
-		//vision = new Vision(); 
+		driveTrain = new DriveTrain(); 
+		vision = new Vision(); 
 		elevator = new Elevator(0); 
 		arm = new Arm(1180); 
 
@@ -147,13 +147,10 @@ public class Robot extends TimedRobot {
 	}
 	
 	public void updateSmartDashboard(){
-		//driveTrain.updateSmartDashboard();
+		driveTrain.updateSmartDashboard();
 		elevator.updateSmartDashboard(); 
-		//vision.updateSmartDashboard();
+		vision.updateSmartDashboard();
 
 		arm.updateSmartDashboard();
-		SmartDashboard.putBoolean("Open:", RobotMap.open); 
-		// SmartDashboard.putNumber("right trigger", oi.xbox.getTriggerAxis(Hand.kRight));
-		// SmartDashboard.putNumber("left trigger", oi.xbox.getTriggerAxis(Hand.kLeft));
 	}
 }

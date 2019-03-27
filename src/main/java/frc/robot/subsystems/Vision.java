@@ -64,7 +64,7 @@ public class Vision extends Subsystem {
 		cam0 = cs.startAutomaticCapture("cam0", 0); 
 
 		cam0.setResolution(320, 240); 
-		cam0.setFPS(15); 
+		cam0.setFPS(30); 
 
 		server = cs.getServer(); 
 		server.setSource(cam0); 

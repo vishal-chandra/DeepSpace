@@ -40,11 +40,11 @@ public class DriveTrain extends Subsystem {
 
 	private WPI_VictorSPX frontLeftSpx; 
 	private WPI_VictorSPX frontRightSpx; 
-	private WPI_TalonSRX backLeftSrx; 
+	private WPI_TalonSRX backLeftSrx;
 	private WPI_TalonSRX backRightSrx;
 
 	public double MAXIMUM_VELOCITY = 3600; // take 90-80% of this 
-
+	public double ramp = 3;
 
 	double left_arbfeedfwd = 0.0; 
 	double right_arbfeedfwd = 0.0; 
@@ -58,7 +58,6 @@ public class DriveTrain extends Subsystem {
 	
 	public DigitalInput colorSensor; 
 
-
 	public boolean backwards = false; 
 	public boolean quickTurn = false; 
 	public AHRS gyroSensor; 
@@ -67,14 +66,16 @@ public class DriveTrain extends Subsystem {
 	DifferentialDrive robotDrive; 
 
 	public DriveTrain(){
-		backLeftSrx = new WPI_TalonSRX(RobotMap.BACK_LEFT_MOTOR);//1 
-
+		backLeftSrx = new WPI_TalonSRX(RobotMap.BACK_LEFT_MOTOR);//1
+		backLeftSrx.configOpenloopRamp(ramp); 
 		frontLeftSpx = new WPI_VictorSPX(RobotMap.FRONT_LEFT_MOTOR); //2 
+
 		backLeftSrx.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 		left = new SpeedControllerGroup(backLeftSrx, frontLeftSpx); 
 
 		frontRightSpx = new WPI_VictorSPX(RobotMap.FRONT_RIGHT_MOTOR); // 3 
 		backRightSrx = new WPI_TalonSRX(RobotMap.BACK_RIGHT_MOTOR); // 4
+		backRightSrx.configOpenloopRamp(ramp);
 
 		 
 		right = new SpeedControllerGroup(backRightSrx, frontRightSpx); 
