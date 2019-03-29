@@ -25,11 +25,16 @@ public class curvatureDrive extends Command {
 	double leftUltra; 
 	double rightUltra; 
 	double ultra_kP = 0.05; 
+
+	RampComponent left; 
+  	RampComponent right;
     public curvatureDrive() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.driveTrain); 
-    	requires(Robot.vision); 
+		requires(Robot.vision); 
+		left = new RampComponent(3.0); 
+    	right = new RampComponent(3.0);
     }
 
     // Called just before this Command runs the first time
@@ -51,6 +56,7 @@ public class curvatureDrive extends Command {
 		// else if(OI.controller.getRawButton(10)){
 		// 	Robot.vision.changePipeline(1);
 		// }
+		// System.out.println(driving_straight);
 		// if(driving_straight){
 		// 	double angle_error = angle_setPoint - Robot.driveTrain.getYaw(); 
 		// 	left_command = -Robot.oi.xbox.getY(GenericHID.Hand.kLeft); 
@@ -65,8 +71,9 @@ public class curvatureDrive extends Command {
 			
 		// 	Robot.driveTrain.driveCertainAmounts(left_command, right_command);
 		// }
+
 		// if(Math.abs(Robot.oi.xbox.getY(GenericHID.Hand.kLeft)) > 0.2 && Math.abs(Robot.oi.xbox.getX(GenericHID.Hand.kRight)) < 0.2 
-		// 	&& !driving_straight ){
+		// 	&& !driving_straight && Robot.driveTrain.drivingStraight){
 		// 	angle_setPoint = Robot.driveTrain.getYaw(); 
 		// 	driving_straight = true;
 		// }
@@ -93,11 +100,13 @@ public class curvatureDrive extends Command {
 	    	Robot.driveTrain.driveCertainAmounts(left_command, right_command);
 			
 		}
-		
-		Robot.driveTrain.driveCertainAmounts(left_command, right_command);
+		else{
+			Robot.driveTrain.curavtureDrive(-Robot.oi.xbox.getY(GenericHID.Hand.kLeft), Robot.oi.xbox.getX(GenericHID.Hand.kRight));
 
-		// else if(Math.abs(Robot.oi.xbox.getX(GenericHID.Hand.kRight)) > 0.2){
-		// 	driving_straight = false; 
+
+		}
+		// if(Math.abs(Robot.oi.xbox.getY(GenericHID.Hand.kLeft)) < 0.2 && Math.abs(Robot.oi.xbox.getX(GenericHID.Hand.kRight)) > 0.2){
+		// 	//driving_straight = false; 
 		// 	Robot.driveTrain.curavtureDrive(-Robot.oi.xbox.getY(GenericHID.Hand.kLeft), Robot.oi.xbox.getX(GenericHID.Hand.kRight));
 			
 		// }

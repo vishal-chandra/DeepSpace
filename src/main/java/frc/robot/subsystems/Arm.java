@@ -178,7 +178,9 @@ public class Arm extends Subsystem {
     //reversed flywheel commands for belt change
     public void intake(){
         fly.set(-0.6);
-        if(getBall()) position = 600;
+        if(getBall()) {
+            position = 600;
+        }
     }
 
     public void shoot(){
@@ -186,7 +188,8 @@ public class Arm extends Subsystem {
     }
 
     public void flyStop(){
-        fly.set(0.0); 
+        if(getBall()) fly.set(-0.2);
+        else fly.set(0.0);
     }
 
     public boolean getBall(){

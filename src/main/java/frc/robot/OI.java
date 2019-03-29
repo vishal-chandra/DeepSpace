@@ -123,6 +123,7 @@ public class OI {
 		x1.whileHeld(new driveStraight(0.4, 0.4));
 		//c9.whenPressed(new changePipeline(0));
 		//c10.whenPressed(new changePipeline(1));
+		x3.whenPressed(new toggleStraight()); 
 
 
 

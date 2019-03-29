@@ -38,6 +38,8 @@ public class DriveTrain extends Subsystem {
 	//private SpeedController bottomLeft; 
 	//private SpeedController bottomRight;
 
+	
+
 	private WPI_VictorSPX frontLeftSpx; 
 	private WPI_VictorSPX frontRightSpx; 
 	private WPI_TalonSRX backLeftSrx;
@@ -62,12 +64,14 @@ public class DriveTrain extends Subsystem {
 	public boolean quickTurn = false; 
 	public AHRS gyroSensor; 
 
+	public boolean drivingStraight = false; 
+
 //	RobotDrive robotDrive; 
 	DifferentialDrive robotDrive; 
 
 	public DriveTrain(){
 		backLeftSrx = new WPI_TalonSRX(RobotMap.BACK_LEFT_MOTOR);//1
-		backLeftSrx.configOpenloopRamp(ramp); 
+		//backLeftSrx.configOpenloopRamp(ramp); 
 		frontLeftSpx = new WPI_VictorSPX(RobotMap.FRONT_LEFT_MOTOR); //2 
 
 		backLeftSrx.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
@@ -75,7 +79,7 @@ public class DriveTrain extends Subsystem {
 
 		frontRightSpx = new WPI_VictorSPX(RobotMap.FRONT_RIGHT_MOTOR); // 3 
 		backRightSrx = new WPI_TalonSRX(RobotMap.BACK_RIGHT_MOTOR); // 4
-		backRightSrx.configOpenloopRamp(ramp);
+		//backRightSrx.configOpenloopRamp(ramp);
 
 		 
 		right = new SpeedControllerGroup(backRightSrx, frontRightSpx); 
@@ -190,6 +194,8 @@ public class DriveTrain extends Subsystem {
 		SmartDashboard.putNumber("Drivetrain Angle:", getYaw()); 
 		SmartDashboard.putNumber("Left Encoder: ", getLeft());
 		SmartDashboard.putNumber("Right Encoder: ", getRight()); 
+
+		SmartDashboard.putBoolean("Driving straight:", this.drivingStraight); 
 
 
 	}
