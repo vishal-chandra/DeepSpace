@@ -29,7 +29,7 @@ public class Arm extends Subsystem {
 	
 	
     public WPI_TalonSRX arm; 
-    SpeedController fly; 
+    public SpeedController fly; 
     Preferences preferences; 
  
 	public DigitalInput armUp; 

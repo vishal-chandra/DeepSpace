@@ -66,7 +66,7 @@ public class curvaturePIDControl extends Command {
     adjusted_left = left.applyAsDouble(adjusted_left); 
     adjusted_right = right.applyAsDouble(adjusted_right); 
 
-    Robot.driveTrain.setSpeed(adjusted_left, adjusted_right);
+    Robot.driveTrain.setSpeed(adjusted_left, adjusted_right, true);
     
 
   }

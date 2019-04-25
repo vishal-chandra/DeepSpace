@@ -48,8 +48,11 @@ public class DriveTrain extends Subsystem {
 	public double MAXIMUM_VELOCITY = 3600; // take 90-80% of this 
 	public double ramp = 3;
 
-	double left_arbfeedfwd = 0.0; 
-	double right_arbfeedfwd = 0.0; 
+	public int vslot = 0;
+	public double kF = 0.28544;
+	public double kP = 0;
+	public double kD = 0;
+
 	// left talon id: 1
 	// right talon id: 0 
 	SpeedControllerGroup left; 
@@ -64,44 +67,47 @@ public class DriveTrain extends Subsystem {
 	public boolean quickTurn = false; 
 	public AHRS gyroSensor; 
 
-	public boolean drivingStraight = false; 
+	public boolean drivingStraight; 
 
 //	RobotDrive robotDrive; 
 	DifferentialDrive robotDrive; 
 
 	public DriveTrain(){
+
+		drivingStraight = false; 
+
+		//---------LEFT Controllers-----------
 		backLeftSrx = new WPI_TalonSRX(RobotMap.BACK_LEFT_MOTOR);//1
-		//backLeftSrx.configOpenloopRamp(ramp); 
 		frontLeftSpx = new WPI_VictorSPX(RobotMap.FRONT_LEFT_MOTOR); //2 
 
 		backLeftSrx.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-		left = new SpeedControllerGroup(backLeftSrx, frontLeftSpx); 
+		left = new SpeedControllerGroup(backLeftSrx, frontLeftSpx);
+		frontLeftSpx.follow(backLeftSrx);
+		backLeftSrx.getSensorCollection().setQuadraturePosition(0, 10);
 
+		//--------RIGHT Controllers-----------
 		frontRightSpx = new WPI_VictorSPX(RobotMap.FRONT_RIGHT_MOTOR); // 3 
 		backRightSrx = new WPI_TalonSRX(RobotMap.BACK_RIGHT_MOTOR); // 4
-		//backRightSrx.configOpenloopRamp(ramp);
 
-		 
 		right = new SpeedControllerGroup(backRightSrx, frontRightSpx); 
 		backRightSrx.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
-
 		frontRightSpx.follow(backRightSrx); 
-		frontLeftSpx.follow(backLeftSrx);
-		
-		backLeftSrx.getSensorCollection().setQuadraturePosition(0, 10); 
     	backRightSrx.getSensorCollection().setQuadraturePosition(0, 10);
+
+		//-------Velocity PID-------
+		backLeftSrx.config_kF(vslot, kF);
+		//backLeftSrx.config_kP(vslot, kP);
+		backLeftSrx.selectProfileSlot(vslot, 0);
+
+		backRightSrx.config_kF(vslot, kF);
+		//backRightSrx.config_kP(vslot, kP);
+		backRightSrx.selectProfileSlot(vslot, 0);
 
 		robotDrive = new DifferentialDrive(left, right); 
 		robotDrive.setSafetyEnabled(false);
 		
 		gyroSensor = new AHRS(SPI.Port.kMXP);
-
 		gyroSensor.reset(); 
-		
-
-		
-
-
 	}
 
 	
@@ -120,12 +126,19 @@ public class DriveTrain extends Subsystem {
 		robotDrive.tankDrive(-0.5, 0.5); 
 	}
 
-	public void setSpeed(double left_input, double right_input){
+	public void setSpeed(double left_input, double right_input, boolean isQuickTurn){
 		
-		backLeftSrx.set(ControlMode.Velocity, left_input * MAXIMUM_VELOCITY, DemandType.ArbitraryFeedForward, left_arbfeedfwd); 
-		backRightSrx.set(ControlMode.Velocity, right_input * MAXIMUM_VELOCITY, DemandType.ArbitraryFeedForward, right_arbfeedfwd); 
+		if(isQuickTurn && (left_input == 0 && right_input != 0)) {
+			left_input = -right_input;
+		}
+		else if(isQuickTurn && (right_input == 0 && left_input != 0)){
+			right_input = -left_input;
+		}
 
+		backLeftSrx.set(ControlMode.Velocity, left_input * MAXIMUM_VELOCITY); 
+		backRightSrx.set(ControlMode.Velocity, right_input * MAXIMUM_VELOCITY); 
 	}
+
 	public void driveNow(Joystick left, Joystick right){
 		
 		frontLeftSpx.setInverted(backwards);
@@ -134,8 +147,6 @@ public class DriveTrain extends Subsystem {
 		backRightSrx.setInverted(backwards);
 		if(backwards) robotDrive.tankDrive(-right.getY(), -left.getY(), true); 
 		else robotDrive.tankDrive(-left.getY(),  -right.getY(), true);
-
-		
 
 	}
 	
@@ -148,8 +159,11 @@ public class DriveTrain extends Subsystem {
 
 		forward = Math.abs(forward) < 0.2 ? 0 : forward; 
 		turn = Math.abs(turn) < 0.2 ? 0 : turn; 
-		robotDrive.curvatureDrive(forward * Math.abs(forward) * 0.8, turn * Math.abs(turn) * 0.8, true);
 
+		double left_command  = forward + turn; 
+		double right_command = forward - turn;
+		//robotDrive.curvatureDrive(forward * Math.abs(forward) * 0.8, turn * Math.abs(turn) * 0.8, true);
+		setSpeed(left_command * Math.abs(left_command) * 0.8, right_command * Math.abs(right_command) * 0.8, true);
 	}
 
 	public void driveCertainAmounts(double left, double right){
@@ -157,15 +171,17 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public void stop(){
-		robotDrive.tankDrive(0.0,0.0);
+		robotDrive.tankDrive(0.0, 0.0);
 	}
 
 	public void driveSlow(){
 		robotDrive.tankDrive(0.5, 0.5); 
 	}
+
 	public void calibrateGyro(){
 		gyroSensor.reset();
 	}
+
 	public double getYaw(){
 		return gyroSensor.getYaw(); 
 	}
@@ -173,12 +189,13 @@ public class DriveTrain extends Subsystem {
 	public void resetGyro(){
 		gyroSensor.reset(); 
 	}
-	
+
 	public void resetEncoders(){
     	backLeftSrx.getSensorCollection().setQuadraturePosition(0, 10); 
     	backRightSrx.getSensorCollection().setQuadraturePosition(0, 10);
 
 	}
+
 	public double getLeft(){
 		return backLeftSrx.getSensorCollection().getQuadraturePosition();
 	}

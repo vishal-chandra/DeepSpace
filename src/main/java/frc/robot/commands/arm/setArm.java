@@ -30,11 +30,14 @@ public class setArm extends Command {
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  protected void execute(){ 
     //Robot.arm.tune();
     // if(Math.abs(OI.controller.getRawAxis(3)) > 0.1){
     //   Robot.arm.setPower(-OI.controller.getRawAxis(3)); 
     // }
+    if(Robot.arm.getBall()) Robot.arm.fly.set(-0.2);
+    else Robot.arm.fly.set(0.0); 
+
     this.position = Robot.arm.position;  
 
     Robot.arm.setPosition(this.position); 
