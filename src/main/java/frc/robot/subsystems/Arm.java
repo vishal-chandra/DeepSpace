@@ -132,7 +132,6 @@ public class Arm extends Subsystem {
     public void setPosition(double setpoint){
         double feedForward = getFeedForward(); 
         arm.set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, feedForward); 
-
         //arm.set(ControlMode.Position, this.position);
     }
     
@@ -172,7 +171,6 @@ public class Arm extends Subsystem {
     public void resetArm(){
         this.position = 0; 
         arm.getSensorCollection().setQuadraturePosition(0, 30);
-
     }
 
     //reversed flywheel commands for belt change
@@ -205,7 +203,6 @@ public class Arm extends Subsystem {
     }
 
     public double getAngle() { // returns angle from ground 
-
         return Math.abs(getArmEncoder() * (360.0/4096.0)); //360 degrees per 4096 encoder ticks
     }
 
@@ -235,8 +232,6 @@ public class Arm extends Subsystem {
    
       // call if tuning PID in execute
     public void tune(){
-        
-    
         double sdkP = preferences.getDouble("Arm mm kP", mm_kP); 
         double sdkI = preferences.getDouble("Arm mm kI", mm_kI); 
         double sdkD = preferences.getDouble("Arm mm kD", mm_kD); 
@@ -258,10 +253,7 @@ public class Arm extends Subsystem {
         if(sdkD != this.mm_kD) {
           mm_kD = sdkD;
           // change slot when doing velocity tuning
-    
           arm.config_kD(1, sdkD);
-    
-    
         }
         
         if(setpoint != this.position) this.position = setpoint; 
